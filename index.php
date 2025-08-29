@@ -44,11 +44,11 @@ $jogos = $result->fetch_assoc();
                 width: 240px;
                 justify-content: center;
                 align-items: center;
-                /*transition: all 0.3s ease;*/
+                transition: all 0.3s ease;
             }
 
             .cartucho:hover{
-                transform: scale(1.05) translateY(-7px);
+                transform: scale(1.05) translateY(-9px);
             }
 
             .btn-menu {
@@ -125,6 +125,8 @@ $jogos = $result->fetch_assoc();
         </div>
         <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
         <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
+
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         
         <!-- Footer -->
         <?php include_once DEV_PATH . 'views/footer.php'?>

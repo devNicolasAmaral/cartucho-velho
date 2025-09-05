@@ -1,0 +1,53 @@
+body {
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../IMG/Site/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    
+}
+
+.cart-img {
+    max-height: 160px;
+    max-width: 160px;
+    align-items: center;
+}
+
+.cartucho {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 260px;
+    width: 240px;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.cartucho:hover{
+    transform: scale(1.05) translateY(-9px);
+}
+
+.btn-menu {
+    width: 45px;
+    height: 45px;
+    border: none;
+}
+
+/* Estilos para o Modo de Alto Contraste */
+body.high-contrast {
+    background-image: none !important;
+    background: linear-gradient(90deg, #C2D8E5 0%, #BAE0E6 100%) !important; 
+    color: #000000 !important;           
+}
+
+body.high-contrast h2 {
+    color: #000000 !important;
+}
+
+body.high-contrast .dropdown-item {
+    color: #000000 !important;
+}
+
+body footer h6{
+    color: #000000 !important;
+}

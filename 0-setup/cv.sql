@@ -6,6 +6,21 @@ USE `cv`;
 /* drop database cv; */
 
 -- -----------------------------------------------------
+-- Table `USUARIOS`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `USUARIOS` (
+    `ID_Usuario` INT AUTO_INCREMENT PRIMARY KEY,
+    `Nome` VARCHAR(255) NOT NULL,
+    `User` LONGTEXT DEFAULT NULL,
+    `Senha` VARCHAR(100) NOT NULL UNIQUE,
+    `Foto_Perfil` VARCHAR(255) DEFAULT NULL,
+    `Data_Cadastro` DATETIME DEFAULT CURRENT_TIMESTAMP, 
+    `Data_Alteracao` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = InnoDB;
+/* drop table USUARIOS; */
+/* select * from USUARIOS; */
+
+-- -----------------------------------------------------
 -- Table `JOGOS`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `JOGOS` (
@@ -15,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `JOGOS` (
     `Email` VARCHAR(100) NOT NULL UNIQUE,
     `Foto_Index` VARCHAR(255) DEFAULT NULL,
     `Script` LONGTEXT DEFAULT NULL,
-    `Data_Upload` DATETIME DEFAULT CURRENT_TIMESTAMP, -- conferir em qual tabela deixar
+    `Data_Upload` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `Data_Alteracao` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 /* drop table JOGOS; */

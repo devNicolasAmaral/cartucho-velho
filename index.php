@@ -99,23 +99,23 @@ $jogos = $result->fetch_assoc();
                 </div>
                 <div class="mb-3">
                     <div class="content">
-                        <div class="row row-cols-2 row-cols-md-4 g-2">
-                            <div class="col">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+                            <div class="col d-flex justify-content-center">
                                 <a href="">
                                     <div class="cartucho" style="background-image: url('dev/IMG/Site/Cartuchos/cartuchoAzulGoiaba.png');"></div>
                                 </a>
                             </div>
-                            <div class="col">
+                            <div class="col d-flex justify-content-center">
                                 <a href="">
                                     <div class="cartucho" style="background-image: url('dev/IMG/Site/Cartuchos/cartuchoBasiquinho.png');"></div>
                                 </a>
                             </div>
-                            <div class="col">
+                            <div class="col d-flex justify-content-center">
                                 <a href="">
                                     <div class="cartucho" style="background-image: url('dev/IMG/Site/Cartuchos/cartuchoLaranjaLaranja.png');"></div>
                                 </a>
                             </div>
-                            <div class="col">
+                            <div class="col d-flex justify-content-center">
                                 <a href="">
                                     <div class="cartucho" style="background-image: url('dev/IMG/Site/Cartuchos/cartuchoVermelhin.png');"></div>
                                 </a>

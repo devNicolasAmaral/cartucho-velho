@@ -28,26 +28,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['Nome'] = $dados['Nome'];
             $_SESSION['expire'] = strtotime('+300 minutes', strtotime('now'));
 
-            $_SESSION["msg"] = "<div class='alert alert-primary' role='aviso'>
-                                    Olá <strong>" . htmlspecialchars($_SESSION['Nome']) . "</strong>, Login efetuado com sucesso!
-                                </div>";
+            $_SESSION["msg"] = ['texto' => "Olá <strong>" . htmlspecialchars($_SESSION['Nome']) . "</strong>, Login efetuado com sucesso!", 'tipo' => 'sucess'];
             mysqli_close($conn);    
             header('Location:' . BASE_URL . 'index.php');
             exit();
         }
         else {
-            $_SESSION["msg"] = "<div class='alert alert-warning' role='aviso'>
-                                Usuário ou senha estão incorretos.
-                            </div>";
+            $_SESSION["msg"] = ['texto' => 'Usuário ou senha estão incorretos', 'tipo' => 'warning'];
             mysqli_close($conn);
             header('Location:' . BASE_URL . 'login.php');
             exit;
         }
     }
     else {
-        $_SESSION["msg"] = "<div class='alert alert-warning' role='aviso'>
-                                Usuário ou senha estão incorretos.
-                            </div>";
+        $_SESSION["msg"] = ['texto' => 'Usuário ou senha estão incorretos', 'tipo' => 'warning'];
         mysqli_close($conn);
         header('Location:' . BASE_URL . 'login.php');
         exit;

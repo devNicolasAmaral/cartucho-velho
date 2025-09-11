@@ -11,7 +11,9 @@ include "./dev/exec/config.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo NOME?> - Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/global.css">
     <style>
         html, body {
             height: 100%;
@@ -22,7 +24,7 @@ include "./dev/exec/config.php";
         }
 
         .left-panel {
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('dev/IMG/Site/background.png');
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('dev/IMG/Site/login-bg.png');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -36,37 +38,49 @@ include "./dev/exec/config.php";
         }
         
         .right-panel {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
+            background: linear-gradient(90deg, #C2D8E5 0%, #BAE0E6 100%);
         }
 
-        .logo-img {
-            max-width: 150px;
-            margin-bottom: 2rem;
+        .banner {
+            background: linear-gradient(90deg, #C2D8E5 0%, #BAE0E6 100%); 
+            border: 4px outset #d6e5eeff;
+            max-width: 100%;
+        }
+
+        .banner a {
+            text-decoration: none;
+            font-size: larger;
+        }
+
+        .fechar {
+            background: linear-gradient(90deg, #C2D8E5 0%, #BAE0E6 100%); 
+            border: 4px outset #d6e5eeff;
+            width: 35px;
+            height: 35px;
         }
 
         .login-form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
         }
 
         .btn-pill {
-            border-radius: 50px;
             padding: 0.75rem 1.5rem;
             font-weight: bold;
         }
 
         .btn-custom-login {
-            background-color: #465efb;
-            border-color: #465efb;
+            background: linear-gradient(90deg, #350BAB 0%, #5792E5 100%);
             color: white;
+            transition: background 0.3s !important;
         }
 
         .btn-custom-login:hover {
-            background-color: #3a4ed0ff;
-            border-color: #3a4ed0ff;
+            background: linear-gradient(90deg, #340f99ff 0%, #5081c5ff 100%);
             color: white;
         }
         
@@ -94,87 +108,90 @@ include "./dev/exec/config.php";
         <div class="row g-0">
             <div class="col-md-6 d-none d-md-flex left-panel">
                 <div>
-                    <h1 class="display-4"><?php echo NOME ?></h1>
-                    <p class="lead">Crie, apresente e compartilhe conteúdo de forma inclusiva e impactante.</p>
+                    <p class="text-danger text-lg">Faça o login no</p>
+                    <img src="dev/IMG/Site/Logo/LogoTexto.png" alt="Logo do site, CARTUCHO VELHO" style="max-width: 450px;">
+                    <p class="text-danger text-lg">e dê um <strong class="text-success text-lg">START</strong> nessa aventura retro!</p>
                 </div>
             </div>
-            <div class="col-md-6 right-panel">
-                <div class="login-form">
-                    <div class="text-center mb-4">
-                        <h2 class="mt-2">Bem-vindo(a) de volta!</h2>
-                        <p class="text-muted">Acesse sua conta para continuar.</p>
+            <div class="col-md-6 right-panel d-flex flex-column">
+                
+                <div class="p-1 banner">
+                    <div class="d-flex justify-content-between align-items-center text-center" style="background: linear-gradient(90deg, #350BAB 0%, #5792E5 100%);">
+                        <div class="m-1 d-flex justify-content-start"><a href="login.php" class="text-white"><img src="dev/IMG/Site/Logo/logo.png" style="max-width: 35px;" alt="Logo Cartucho Velho"> Login</a></div>
+                        <div class="fechar m-1 d-flex justify-content-end"><a href="index.php" class="text-black"><i class="bi bi-x-lg p-1"></i></a></div>
                     </div>
-    
-                    <form action="dev/exec/login_exec.php" method="POST">
-                        <?php
-                            // Verifica se $_SESSION["msg"] não é nulo e imprime a mensagem
-                            if(isset($_SESSION["msg"]) && $_SESSION["msg"] != null) 
-                            {
-                                echo $_SESSION["msg"];
-                                // Limpa a mensagem para evitar que seja exibida novamente
-                                $_SESSION["msg"] = null;
-                            }
-                        ?>
-                        <div class="mb-3">
-                            <label for="user" class="form-label">Usuário ou Email</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="user" name="user" required>
-                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                </div>
+
+                <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+                    
+                    <div class="login-form">
+                        <div class="p-3">
+                            <div class="text-center mb-4">
+                                <img class="m-2" src="<?php echo PERFIL_PLACEHOLDER?>" alt="Foto do Usuário" width="120" height="120">
+                                <p class="text-muted">Acesse sua conta para continuar.</p>
+                            </div>
+            
+                            <form action="dev/exec/login_exec.php" method="POST">
+                                <div class="mb-3">
+                                    <label for="user" class="form-label">Usuário</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="user" name="user" value="admin" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Senha</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="password" name="password" value="••••••" required>
+                                    </div>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-custom-login btn-pill mt-2">Entrar</button>
+                                </div>
+                            </form>
+                            <div class="text-center mt-4">
+                                <p class="text-muted">Não tem uma conta? <a class="cadastro" href="cadastro.php">Cadastra-se</a></p>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Senha</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="password" name="password" required>
-                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mb3">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="lembrar" name="lembrar">
-                                <label for="lembrar" class="form-check-label">Lembrar-me</label>
-                            </div>
-                            <a href="recuperar_senha.php" class="form-text mb-1">Esqueceu a senha?</a>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-custom-login btn-pill mt-2">Entrar</button>
-                        </div>
-                    </form>
-                    <div class="text-center mt-4">
-                        <p class="text-muted">Não tem uma conta? <a class="cadastro" href="cadastro.php">Cadastra-se</a></p>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Toast -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <strong class="me-auto" id="toastTitulo">Notificação</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastCorpo">
+            </div>
+        </div>
+    </div>
+
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
         <div vw-plugin-wrapper>
             <div class="vw-plugin-top-wrapper"></div>
         </div>
     </div>
-    <div class="modal fade" id="forgotPasswordModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Recuperar Senha</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="forgotPasswordForm">
-                        <p>Digite seu e-mail e enviaremos um link para você criar uma nova senha.</p>
-                        <div id="forgot-status-message"></div>
-                        <div class="mb-3">
-                            <label for="email_recuperacao" class="form-label">Seu e-mail</label>
-                            <input type="email" class="form-control" id="email_recuperacao" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Enviar link de recuperação</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= DEV_URL ?>JS/toast.js"></script>
+    <script>
+        <?php
+        if (isset($_SESSION['msg']) && is_array($_SESSION['msg'])) {
+            $texto = addslashes($_SESSION['msg']['texto']);
+            $tipo = $_SESSION['msg']['tipo'];
+            
+            echo "mostrarToast('{$texto}', '{$tipo}');";
+
+            unset($_SESSION['msg']);
+        }
+        ?>
+    </script>
 </body>
 </html>

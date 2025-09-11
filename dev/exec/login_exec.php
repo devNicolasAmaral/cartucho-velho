@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['Nome'] = $dados['Nome'];
             $_SESSION['expire'] = strtotime('+300 minutes', strtotime('now'));
 
-            $_SESSION["msg"] = ['texto' => "Olá <strong>" . htmlspecialchars($_SESSION['Nome']) . "</strong>, Login efetuado com sucesso!", 'tipo' => 'sucess'];
+            $_SESSION["msg"] = ['texto' => "Olá " . htmlspecialchars($_SESSION['Nome']) . ", Login efetuado com sucesso!", 'tipo' => 'success'];
             mysqli_close($conn);    
             header('Location:' . BASE_URL . 'index.php');
             exit();

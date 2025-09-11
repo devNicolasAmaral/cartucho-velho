@@ -6,7 +6,7 @@ body {
     padding: 0;
 
     /* SEUS ESTILOS EXISTENTES FORAM MANTIDOS ABAIXO */
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../IMG/Site/background.jpg');
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../IMG/Site/index-bg-1.jpg');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -39,36 +39,34 @@ body {
     border: none;
 }
 
-/* Estilos para o Modo de Alto Contraste */
-body.high-contrast {
-    background-image: none !important;
-    background: linear-gradient(90deg, #C2D8E5 0%, #BAE0E6 100%) !important; 
-    color: #000000 !important;           
+.container-fluid {
+    background: linear-gradient(90deg, #c0c0c0 0%, #999999ff 100%);
+    border: 3px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
 }
 
-body.high-contrast h2 {
-    color: #000000 !important;
-}
-
-body.high-contrast .dropdown-item {
-    color: #000000 !important;
-}
-
-body footer h6{
-    color: #000000 !important;
+.dropdown {
+    background: linear-gradient(90deg, #c0c0c0 0%, #999999ff 100%);
+    border: 3px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
 }
 
 .dropdown-menu-retro {
     /* Cores e Fundo */
     background-color: #c0c0c0; /* Cinza clássico do Windows */
     border-radius: 0;
-    padding: 2px; /* Pequeno espaçamento interno */
+    padding: 2px; 
     box-shadow: 1px 1px 0px 1px #000; /* Sombra dura, opcional */
     font-family: 'Pixelify Sans', sans-serif; /* Fonte pixelada */
     font-size: 16px;
 
-    /* O truque principal: bordas para criar o efeito 3D "outset" */
-    border: 2px solid;
+    border: 3px solid;
     border-top-color: #ffffff;
     border-left-color: #ffffff;
     border-right-color: #404040;
@@ -88,7 +86,7 @@ body footer h6{
 .dropdown-menu-retro .dropdown-item:hover,
 .dropdown-menu-retro .dropdown-item:focus {
     background-color: #000080; /* Azul escuro clássico de seleção */
-    color: #ffffff; /* Texto branco */
+    color: #ffffff !important; /* Texto branco */
 }
 
 /* Garante que os ícones também fiquem brancos no hover */
@@ -141,4 +139,23 @@ body footer h6{
     color: #808080;
     opacity: 1;
     font-family: 'Pixelify Sans', sans-serif;
+}
+
+/* Estilos para o Modo de Alto Contraste */
+body.high-contrast {
+    background-image: none !important;
+    background: linear-gradient(90deg, #c0c0c0 0%, #999999ff 100%) !important; 
+    color: #000000 !important;           
+}
+
+body.high-contrast h2 {
+    color: #000000 !important;
+}
+
+body.high-contrast .dropdown-item {
+    color: #000000 !important;
+}
+
+body footer h6{
+    color: #000000 !important;
 }

@@ -1,0 +1,53 @@
+/* Estilo Retrô para o Toast do Bootstrap */
+
+.toast-retro {
+    border-radius: 0;
+    background-color: #c0c0c0; /* Cinza clássico */
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px !important;
+    background-clip: padding-box; /* Essencial para as bordas aparecerem corretamente */
+    border: 3px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+    box-shadow: 5px 5px 0px 0px rgba(0,0,0,0.5); /* Sombra dura opcional */
+}
+
+/* Cabeçalho do toast (a barra de título azul) */
+.toast-retro .toast-header {
+    background-color: #000080; /* Azul escuro de seleção */
+    color: #ffffff;
+    border-bottom: 0;
+    padding: 5px 10px;
+    border-radius: 0;
+}
+
+/* Corpo do toast */
+.toast-retro .toast-body {
+    color: #000000;
+    padding: 15px;
+}
+
+/* Botão de fechar do toast */
+.toast-retro .toast-header .btn-close {
+    background-color: #c0c0c0;
+    border-radius: 0;
+    opacity: 1;
+    filter: none;
+    width: 20px;
+    height: 20px;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+    border: 2px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+}
+
+.toast-retro .toast-header .btn-close:active {
+    border-top-color: #404040;
+    border-left-color: #404040;
+    border-right-color: #ffffff;
+    border-bottom-color: #ffffff;
+}

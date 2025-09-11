@@ -33,19 +33,24 @@ $jogos = $result->fetch_assoc();
         <title>Cartucho Velho</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/index.css">
+        <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/modal-retro.css">
+        <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/toast-retro.css">
     </head>
     <body class="d-flex flex-column min-vh-100">
         <div class="content flex-grow-1">
-            <div class="container-fluid p-2" style="background: linear-gradient(90deg, #C2D8E5 0%, #BAE0E6 100%); border: 4px outset #d6e5eeff;">
+            <div class="container-fluid p-2">
                 <div class="d-flex justify-content-between align-items-center text-center" style="background: linear-gradient(90deg, #350BAB 0%, #5792E5 100%);">
                     <div class="m-1 d-flex justify-content-start text-secondary"><a href="index.php"><img src="dev/IMG/Site/Logo/logoTexto.png" style="max-width: 180px;" alt="Logo Cartucho Velho"></a></div>
                     
                     <div class="m-2">
                         <?php if ($id_user && $user) : // --- DROPDOWN DO USUÁRIO LOGADO --- ?>
-                            <div class="dropdown p-1" style="background: linear-gradient(90deg, #C2D8E5 0%, #BAE0E6 100%); border: 4px outset #d6e5eeff;">
+                            <div class="dropdown p-1">
                                 <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="<?php echo ($user['Foto_Perfil'] ?? false) ? "dev/" . $user['Foto_Perfil'] : PERFIL_PLACEHOLDER; ?>" alt="Foto do Usuário" width="40" height="40">
+                                    <img class="img-fluid" src="<?php echo ($user['Foto_Perfil'] ?? false) ? "dev/" . $user['Foto_Perfil'] : PERFIL_PLACEHOLDER; ?>" alt="Foto do Usuário" width="50" height="50">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-retro">
                                     <li><span class="dropdown-item-text">Olá, <?php echo $_SESSION['Nome']; ?>!</span></li>
@@ -58,9 +63,9 @@ $jogos = $result->fetch_assoc();
                                 </ul>
                             </div>
                         <?php else: // --- DROPDOWN DO VISITANTE --- ?>
-                            <div class="dropdown">
+                            <div class="dropdown p-1">
                                 <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="<?php echo PERFIL_PLACEHOLDER?>" alt="Foto do Usuário" width="40" height="40">
+                                    <img class="img-fluid" src="<?php echo PERFIL_PLACEHOLDER?>" alt="Foto do Usuário" width="50" height="50">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-retro">
                                     <li><a class="dropdown-item" href="login.php"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
@@ -126,7 +131,7 @@ $jogos = $result->fetch_assoc();
         <?php if ($id_user): // ATUALIZAR PARA SE ENCAIXAR NO NOSSO PADRÃO DE DESING?>
         <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+                <div class="modal-content modal-retro">
                     <form id="uploadForm" enctype="multipart/form-data">
                         <div class="modal-header">
                             <h5 class="modal-title" id="uploadModalLabel"></h5>
@@ -143,14 +148,26 @@ $jogos = $result->fetch_assoc();
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                            <button type="button" class="btn-retro" data-bs-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn-retro">Salvar Alterações</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
         <?php endif; ?>
+
+        <!-- Toast -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="liveToast" class="toast toast-retro" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                <strong class="me-auto" id="toastTitulo">Notificação</strong>
+                <button type="button" class="btn-retro" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="toastCorpo">
+                </div>
+            </div>
+        </div>
         
         <div vw class="enabled">
             <div vw-access-button class="active"></div>
@@ -179,10 +196,12 @@ $jogos = $result->fetch_assoc();
                         document.body.classList.add('high-contrast');
                         this.innerHTML = '<i class="bi bi-highlights me-2"></i>Desativar Contraste';
                         this.innerHTML = '<i class="bi bi-highlights me-2"></i>Desativar Contraste';
+                        mostrarToast('Modo Contraste Ativado', 'success');
                     } 
                     else {
                         document.body.classList.remove('high-contrast');
                         this.innerHTML = '<i class="bi bi-highlights me-2"></i>Ativar Contraste';
+                        mostrarToast('Modo Contraste Desativado', 'success');
                     }
                 });
 
@@ -194,10 +213,12 @@ $jogos = $result->fetch_assoc();
                     if (isSoundOn) {
                         console.log("Som ATIVADO"); 
                         this.innerHTML = '<i class="bi bi-volume-mute-fill me-2"></i>Desativar Som';
+                        mostrarToast('Musica Ativada', 'success');
                     } 
                     else {
                         console.log("Som DESATIVADO");
                         this.innerHTML = '<i class="bi bi-volume-up-fill me-2"></i>Ativar Som';
+                        mostrarToast('Musica Desativada', 'success');
                     }
                 });
             });
@@ -245,6 +266,7 @@ $jogos = $result->fetch_assoc();
                             document.querySelector('.dropdown-toggle img').src = result.newPath;
                         
                         setTimeout(() => uploadModal.hide(), 1500);
+                        mostrarToast('Foto Alterada Com Sucesso!', 'success');
                     } 
                     else
                         uploadStatusMessage.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
@@ -260,5 +282,18 @@ $jogos = $result->fetch_assoc();
             });
         </script>
         <?php endif; ?>
+        <script src="<?= DEV_URL ?>JS/toast.js"></script>
+        <script>
+            <?php
+            if (isset($_SESSION['msg']) && is_array($_SESSION['msg'])) {
+                $texto = addslashes($_SESSION['msg']['texto']);
+                $tipo = $_SESSION['msg']['tipo'];
+                
+                echo "mostrarToast('{$texto}', '{$tipo}');";
+
+                unset($_SESSION['msg']);
+            }
+            ?>
+        </script>
     </body>
 </html>

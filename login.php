@@ -25,9 +25,9 @@ include "./dev/exec/config.php";
             <div class="row g-0">
                 <div class="col-md-6 d-none d-md-flex left-panel">
                     <div>
-                        <h2 class="text-danger">Faça o login no</h2>
+                        <h5 class="text-danger">Faça o login no</h5>
                         <img src="dev/IMG/Site/Logo/LogoTexto.png" alt="Logo do site, CARTUCHO VELHO" style="max-width: 400px;" class="img-fluid m-3">
-                        <h2 class="text-danger">e dê um <strong class="text-success">START</strong> nessa aventura retrô!</h2>
+                        <h5 class="text-danger">e dê um <strong class="text-success">START</strong> nessa aventura retrô!</h5>
                     </div>
                 </div>
                 <div class="col-md-6 right-panel d-flex flex-column">

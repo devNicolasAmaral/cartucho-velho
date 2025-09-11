@@ -1,9 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
 body {
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../IMG/Site/background.png');
-    background-size: cover;
+
+    margin: 0;
+    padding: 0;
+
+    /* SEUS ESTILOS EXISTENTES FORAM MANTIDOS ABAIXO */
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../IMG/Site/background.jpg');
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    
 }
 
 .cart-img {
@@ -50,4 +56,89 @@ body.high-contrast .dropdown-item {
 
 body footer h6{
     color: #000000 !important;
+}
+
+.dropdown-menu-retro {
+    /* Cores e Fundo */
+    background-color: #c0c0c0; /* Cinza clássico do Windows */
+    border-radius: 0;
+    padding: 2px; /* Pequeno espaçamento interno */
+    box-shadow: 1px 1px 0px 1px #000; /* Sombra dura, opcional */
+    font-family: 'Pixelify Sans', sans-serif; /* Fonte pixelada */
+    font-size: 16px;
+
+    /* O truque principal: bordas para criar o efeito 3D "outset" */
+    border: 2px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+}
+
+/* Estilo para cada item do menu */
+.dropdown-menu-retro .dropdown-item {
+    color: #000000; /* Texto preto */
+    padding: 5px 12px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Efeito ao passar o mouse (hover) e focar */
+.dropdown-menu-retro .dropdown-item:hover,
+.dropdown-menu-retro .dropdown-item:focus {
+    background-color: #000080; /* Azul escuro clássico de seleção */
+    color: #ffffff; /* Texto branco */
+}
+
+/* Garante que os ícones também fiquem brancos no hover */
+.dropdown-menu-retro .dropdown-item:hover i,
+.dropdown-menu-retro .dropdown-item:focus i {
+    color: #ffffff;
+}
+
+/* Estilo para o texto estático (Olá, Nome!) */
+.dropdown-menu-retro .dropdown-item-text {
+    color: #000000;
+    padding: 5px 12px;
+}
+
+/* Divisor com efeito 3D "inset" */
+.dropdown-menu-retro .dropdown-divider {
+    height: 0;
+    margin: 4px 1px;
+    overflow: hidden;
+    border-top: 1px solid #808080; /* Borda escura em cima */
+    border-bottom: 1px solid #ffffff; /* Borda clara embaixo */
+}
+
+/* Estilo para a barra de pesquisa retrô */
+.search-bar-retro {
+    background-color: #ffffff;
+    border: 2px solid;
+    /* Efeito 3D de borda para dentro (inset) */
+    border-top-color: #404040;
+    border-left-color: #404040;
+    border-right-color: #ffffff;
+    border-bottom-color: #ffffff;
+    border-radius: 0;
+    box-shadow: none; /* Remove qualquer sombra do bootstrap */
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 16px;
+    color: #000000;
+    padding: 8px 10px;
+    width: 100%; /* Para ocupar o espaço da coluna do bootstrap */
+}
+
+/* Remove a borda azul padrão ao focar no campo */
+.search-bar-retro:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Estiliza o texto do placeholder */
+.search-bar-retro::placeholder {
+    color: #808080;
+    opacity: 1;
+    font-family: 'Pixelify Sans', sans-serif;
 }

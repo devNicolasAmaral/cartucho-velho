@@ -37,7 +37,6 @@ $jogos = $result->fetch_assoc();
     </head>
     <body class="d-flex flex-column min-vh-100">
         <div class="content flex-grow-1">
-            <!-- Banner -->
             <div class="container-fluid p-2" style="background: linear-gradient(90deg, #C2D8E5 0%, #BAE0E6 100%); border: 4px outset #d6e5eeff;">
                 <div class="d-flex justify-content-between align-items-center text-center" style="background: linear-gradient(90deg, #350BAB 0%, #5792E5 100%);">
                     <div class="m-1 d-flex justify-content-start text-secondary"><a href="index.php"><img src="dev/IMG/Site/Logo/logoTexto.png" style="max-width: 180px;" alt="Logo Cartucho Velho"></a></div>
@@ -48,7 +47,7 @@ $jogos = $result->fetch_assoc();
                                 <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="<?php echo ($user['Foto_Perfil'] ?? false) ? "dev/" . $user['Foto_Perfil'] : PERFIL_PLACEHOLDER; ?>" alt="Foto do Usuário" width="40" height="40">
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end text-small shadow">
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-retro">
                                     <li><span class="dropdown-item-text">Olá, <?php echo $_SESSION['Nome']; ?>!</span></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="#" onclick="openUploadModal()"><i class="bi bi-person-circle me-2"></i>Alterar Foto</a></li>
@@ -63,7 +62,7 @@ $jogos = $result->fetch_assoc();
                                 <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="<?php echo PERFIL_PLACEHOLDER?>" alt="Foto do Usuário" width="40" height="40">
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end text-small shadow">
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-retro">
                                     <li><a class="dropdown-item" href="login.php"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
                                     <li><a class="dropdown-item" href="cadastro.php"><i class="bi bi-person-plus-fill me-2"></i>Cadastrar</a></li>
                                     <li><hr class="dropdown-divider"></li>
@@ -77,10 +76,13 @@ $jogos = $result->fetch_assoc();
             </div>
 
             <div class="container mt-3 p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="text-center mb-3">
                     <h2 class="text-white">Todos os jogos</h2>
-                    <div class="datalist">
-                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Digite seu jogo">
+                </div>
+
+                <div class="row justify-content-center mb-4">
+                    <div class="col-12 col-md-6">
+                        <input class="search-bar-retro" list="datalistOptions" id="exampleDataList" placeholder="Digite para pesquisar seu jogo...">
                         <datalist id="datalistOptions">
                             <option value="Mario">
                             <option value="Snake">
@@ -90,7 +92,6 @@ $jogos = $result->fetch_assoc();
                         </datalist>
                     </div>
                 </div>
-
                 <div class="mb-3">
                     <div class="content">
                         <div class="row row-cols-2 row-cols-md-4 g-2">
@@ -120,7 +121,6 @@ $jogos = $result->fetch_assoc();
                 </div>
             </div>
         </div>
-        <!-- Footer -->
         <?php include_once DEV_PATH . 'views/footer.php'?>
 
         <?php if ($id_user): // ATUALIZAR PARA SE ENCAIXAR NO NOSSO PADRÃO DE DESING?>
@@ -178,86 +178,3 @@ $jogos = $result->fetch_assoc();
                     if (isContrastOn) {
                         document.body.classList.add('high-contrast');
                         this.innerHTML = '<i class="bi bi-highlights me-2"></i>Desativar Contraste';
-                    } 
-                    else {
-                        document.body.classList.remove('high-contrast');
-                        this.innerHTML = '<i class="bi bi-highlights me-2"></i>Ativar Contraste';
-                    }
-                });
-
-                // Função para Som
-                soundBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    isSoundOn = !isSoundOn; 
-
-                    if (isSoundOn) {
-                        console.log("Som ATIVADO"); 
-                        this.innerHTML = '<i class="bi bi-volume-mute-fill me-2"></i>Desativar Som';
-                    } 
-                    else {
-                        console.log("Som DESATIVADO");
-                        this.innerHTML = '<i class="bi bi-volume-up-fill me-2"></i>Ativar Som';
-                    }
-                });
-            });
-        </script>
-        <?php if ($id_user): ?>
-        <script>
-            // --- LÓGICA DO MODAL DE UPLOAD ---
-            const uploadModalEl = document.getElementById('uploadModal');
-            const uploadModal = new bootstrap.Modal(uploadModalEl);
-            
-            const uploadModalLabel = document.getElementById('uploadModalLabel');
-            const uploadPreview = document.getElementById('uploadPreview');
-            const uploadTypeInput = document.getElementById('uploadType');
-            const uploadLabel = document.getElementById('uploadLabel');
-            const uploadStatusMessage = document.getElementById('uploadStatusMessage');
-
-            function openUploadModal() {
-                uploadStatusMessage.innerHTML = ''; 
-                
-                uploadModalLabel.textContent = 'Alterar Foto de Perfil';
-                uploadLabel.textContent = 'Escolha uma nova foto de perfil (quadrada, de preferência).';
-                uploadPreview.src = document.querySelector('.dropdown-toggle img').src;
-                
-                uploadModal.show();
-            }
-
-            document.getElementById('uploadForm').addEventListener('submit', async function(event) {
-                event.preventDefault(); 
-
-                const formData = new FormData(this);
-                const submitButton = this.querySelector('button[type="submit"]');
-                submitButton.disabled = true;
-                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...';
-
-                try {
-                    const response = await fetch('dev/exec/ajax_upload_perfil.php', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const result = await response.json();
-
-                    if (result.success) {
-                        uploadStatusMessage.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
-                        if (formData.get('tipo') === 'foto')
-                            document.querySelector('.dropdown-toggle img').src = result.newPath;
-                        
-                        setTimeout(() => uploadModal.hide(), 1500);
-                    } 
-                    else
-                        uploadStatusMessage.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
-                } 
-                catch (error) {
-                    uploadStatusMessage.innerHTML = `<div class="alert alert-danger">Erro de conexão. Tente novamente.</div>`;
-                    console.log(error);
-                } 
-                finally {
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Salvar Alterações';
-                }
-            });
-        </script>
-        <?php endif; ?>
-    </body>
-</html>

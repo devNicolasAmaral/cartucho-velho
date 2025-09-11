@@ -178,3 +178,87 @@ $jogos = $result->fetch_assoc();
                     if (isContrastOn) {
                         document.body.classList.add('high-contrast');
                         this.innerHTML = '<i class="bi bi-highlights me-2"></i>Desativar Contraste';
+                        this.innerHTML = '<i class="bi bi-highlights me-2"></i>Desativar Contraste';
+                    } 
+                    else {
+                        document.body.classList.remove('high-contrast');
+                        this.innerHTML = '<i class="bi bi-highlights me-2"></i>Ativar Contraste';
+                    }
+                });
+
+                // Função para Som
+                soundBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    isSoundOn = !isSoundOn; 
+
+                    if (isSoundOn) {
+                        console.log("Som ATIVADO"); 
+                        this.innerHTML = '<i class="bi bi-volume-mute-fill me-2"></i>Desativar Som';
+                    } 
+                    else {
+                        console.log("Som DESATIVADO");
+                        this.innerHTML = '<i class="bi bi-volume-up-fill me-2"></i>Ativar Som';
+                    }
+                });
+            });
+        </script>
+        <?php if ($id_user): ?>
+        <script>
+            // --- LÓGICA DO MODAL DE UPLOAD ---
+            const uploadModalEl = document.getElementById('uploadModal');
+            const uploadModal = new bootstrap.Modal(uploadModalEl);
+            
+            const uploadModalLabel = document.getElementById('uploadModalLabel');
+            const uploadPreview = document.getElementById('uploadPreview');
+            const uploadTypeInput = document.getElementById('uploadType');
+            const uploadLabel = document.getElementById('uploadLabel');
+            const uploadStatusMessage = document.getElementById('uploadStatusMessage');
+
+            function openUploadModal() {
+                uploadStatusMessage.innerHTML = ''; 
+                
+                uploadModalLabel.textContent = 'Alterar Foto de Perfil';
+                uploadLabel.textContent = 'Escolha uma nova foto de perfil (quadrada, de preferência).';
+                uploadPreview.src = document.querySelector('.dropdown-toggle img').src;
+                
+                uploadModal.show();
+            }
+
+            document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+                event.preventDefault(); 
+
+                const formData = new FormData(this);
+                const submitButton = this.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...';
+
+                try {
+                    const response = await fetch('dev/exec/ajax_upload_perfil.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        uploadStatusMessage.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
+                        if (formData.get('tipo') === 'foto')
+                            document.querySelector('.dropdown-toggle img').src = result.newPath;
+                        
+                        setTimeout(() => uploadModal.hide(), 1500);
+                    } 
+                    else
+                        uploadStatusMessage.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
+                } 
+                catch (error) {
+                    uploadStatusMessage.innerHTML = `<div class="alert alert-danger">Erro de conexão. Tente novamente.</div>`;
+                    console.log(error);
+                } 
+                finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Salvar Alterações';
+                }
+            });
+        </script>
+        <?php endif; ?>
+    </body>
+</html>

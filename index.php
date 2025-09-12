@@ -36,15 +36,21 @@ $jogos = $result->fetch_assoc();
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Workbench&display=swap" rel="stylesheet">
+
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/index.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/modal-retro.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/toast-retro.css">
+
+
     </head>
     <body class="d-flex flex-column min-vh-100">
         <div class="content flex-grow-1">
             <div class="container-fluid p-2">
                 <div class="d-flex justify-content-between align-items-center text-center" style="background: linear-gradient(90deg, #350BAB 0%, #5792E5 100%);">
-                    <div class="m-1 d-flex justify-content-start text-secondary"><a href="index.php"><img src="dev/IMG/Site/Logo/logoTexto.png" style="max-width: 180px;" alt="Logo Cartucho Velho"></a></div>
+                    <div class="m-2 d-flex justify-content-start text-secondary"><a href="index.php"><img src="dev/IMG/Site/Logo/logoTexto.png" style="max-width: 180px;" alt="Logo Cartucho Velho"></a></div>
                     
                     <div class="m-2">
                         <?php if ($id_user && $user) : // --- DROPDOWN DO USUÁRIO LOGADO --- ?>
@@ -82,19 +88,15 @@ $jogos = $result->fetch_assoc();
 
             <div class="container mt-3 p-4">
                 <div class="text-center mb-3">
-                    <h4 class="text-white title-games">Todos os jogos</h4>
+                    <h4 class="text-white title-games">Todos os Jogos</h4>
                 </div>
 
                 <div class="row justify-content-center mb-4">
                     <div class="col-12 col-md-6">
-                        <input class="search-bar-retro" list="datalistOptions" id="exampleDataList" placeholder="Digite para pesquisar seu jogo...">
-                        <datalist id="datalistOptions">
-                            <option value="Mario">
-                            <option value="Snake">
-                            <option value="Bomberman">
-                            <option value="Circus Charlie">
-                            <option value="Chicago">
-                        </datalist>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control search-bar-retro" placeholder="Digite para pesquisar seu jogo..." aria-label="Username" aria-describedby="basic-addon1">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+                        </div>
                     </div>
                 </div>
                 <div class="mb-3">

@@ -34,14 +34,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
         else {
-            $_SESSION["msg"] = ['texto' => 'Usuário ou senha estão incorretos', 'tipo' => 'warning'];
+            $_SESSION["msg"] = ['texto' => 'Usuário ou senha estão incorretos', 'tipo' => 'danger'];
             mysqli_close($conn);
             header('Location:' . BASE_URL . 'login.php');
             exit;
         }
     }
     else {
-        $_SESSION["msg"] = ['texto' => 'Usuário ou senha estão incorretos', 'tipo' => 'warning'];
+        $_SESSION["msg"] = ['texto' => 'Usuário ou senha estão incorretos', 'tipo' => 'danger'];
         mysqli_close($conn);
         header('Location:' . BASE_URL . 'login.php');
         exit;

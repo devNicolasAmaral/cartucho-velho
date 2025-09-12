@@ -13,7 +13,8 @@ body {
 }
 
 .title-games {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Jersey 10';
+    font-size: 52px;
 }
 
 .cart-img {
@@ -120,15 +121,16 @@ body {
 .search-bar-retro {
     background-color: #ffffff;
     border: 2px solid;
+    border-right-width: 0;
     /* Efeito 3D de borda para dentro (inset) */
     border-top-color: #404040;
     border-left-color: #404040;
-    border-right-color: #ffffff;
+    border-right-color: #ffffff00;
     border-bottom-color: #ffffff;
     border-radius: 0;
     box-shadow: none; /* Remove qualquer sombra do bootstrap */
     font-family: 'VT323', monospace !important;
-    font-size: 16px;
+    font-size: 24px;
     color: #000000;
     padding: 8px 10px;
     width: 100%; /* Para ocupar o espaço da coluna do bootstrap */
@@ -138,6 +140,30 @@ body {
 .search-bar-retro:focus {
     outline: none;
     box-shadow: none;
+
+    border-top-color: #404040;
+    border-left-color: #404040;
+    border-right-color: #ffffff00;
+    border-bottom-color: #ffffff;
+}
+
+
+.input-group-text {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-left-width: 0;
+
+    border-top-color: #404040;
+    border-left-color: #404040;
+    border-right-color: #ffffff00;
+    border-bottom-color: #ffffff;
+    border-radius: 0;
+
+    box-shadow: none; /* Remove qualquer sombra do bootstrap */
+    font-family: 'VT323', monospace !important;
+    font-size: 16px;
+    color: #000000;
+    padding: 8px 10px;
 }
 
 /* Estiliza o texto do placeholder */

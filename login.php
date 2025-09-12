@@ -60,7 +60,7 @@ include "./dev/exec/config.php";
                                             <input type="password" class="form-control" id="password" name="password" value="••••••" required>
                                         </div>
                                     </div>
-                                    <div class="d-grid">
+                                    <div class="d-grid div-btn">
                                         <button type="submit" class="btn btn-custom-login btn-pill mt-2">Entrar</button>
                                     </div>
                                 </form>

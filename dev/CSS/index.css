@@ -12,6 +12,10 @@ body {
     background-position: center;
 }
 
+.title-games {
+    font-family: 'Press Start 2P', cursive;
+}
+
 .cart-img {
     max-height: 160px;
     max-width: 160px;
@@ -22,8 +26,8 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    height: 260px;
-    width: 240px;
+    height: 285px;
+    width: 250px;
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
@@ -46,6 +50,8 @@ body {
     border-left-color: #ffffff;
     border-right-color: #404040;
     border-bottom-color: #404040;
+    font-family: 'VT323', monospace !important;
+    font-size: 20px;
 }
 
 .dropdown {
@@ -121,7 +127,7 @@ body {
     border-bottom-color: #ffffff;
     border-radius: 0;
     box-shadow: none; /* Remove qualquer sombra do bootstrap */
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'VT323', monospace !important;
     font-size: 16px;
     color: #000000;
     padding: 8px 10px;
@@ -138,7 +144,7 @@ body {
 .search-bar-retro::placeholder {
     color: #808080;
     opacity: 1;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'VT323', monospace !important;
 }
 
 /* Estilos para o Modo de Alto Contraste */

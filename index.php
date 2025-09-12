@@ -82,7 +82,7 @@ $jogos = $result->fetch_assoc();
 
             <div class="container mt-3 p-4">
                 <div class="text-center mb-3">
-                    <h2 class="text-white">Todos os jogos</h2>
+                    <h4 class="text-white title-games">Todos os jogos</h4>
                 </div>
 
                 <div class="row justify-content-center mb-4">

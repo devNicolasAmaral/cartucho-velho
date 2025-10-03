@@ -18,13 +18,8 @@ if ($id_user) {
     $user = $resultUser->fetch_assoc();
 }
 
-$sql = "SELECT * FROM JOGOS";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$result = $stmt->get_result();
-$jogos = $result->fetch_assoc();
+$jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORDER BY Nome");
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -33,18 +28,13 @@ $jogos = $result->fetch_assoc();
         <title>Cartucho Velho</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Workbench&display=swap" rel="stylesheet">
-
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/index.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/modal-retro.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/toast-retro.css">
-
-
     </head>
     <body class="d-flex flex-column min-vh-100">
         <div class="content flex-grow-1">
@@ -94,35 +84,21 @@ $jogos = $result->fetch_assoc();
                 <div class="row justify-content-center mb-4">
                     <div class="col-12 col-md-6">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control search-bar-retro" placeholder="Digite para pesquisar seu jogo..." aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="text" id="busca_jogo" class="form-control search-bar-retro" placeholder="Digite para pesquisar seu jogo..." aria-describedby="basic-addon1">
                             <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
                         </div>
                     </div>
                 </div>
                 <div class="mb-3">
                     <div class="content">
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
-                            <div class="col d-flex justify-content-center">
-                                <a href="">
-                                    <div class="cartucho" style="background-image: url('dev/IMG/Site/Cartuchos/cartuchoAzulGoiaba.png');"></div>
-                                </a>
-                            </div>
-                            <div class="col d-flex justify-content-center">
-                                <a href="">
-                                    <div class="cartucho" style="background-image: url('dev/IMG/Site/Cartuchos/cartuchoBasiquinho.png');"></div>
-                                </a>
-                            </div>
-                            <div class="col d-flex justify-content-center">
-                                <a href="">
-                                    <div class="cartucho" style="background-image: url('dev/IMG/Site/Cartuchos/cartuchoLaranjaLaranja.png');"></div>
-                                </a>
-                            </div>
-                            <div class="col d-flex justify-content-center">
-                                <a href="">
-                                    <div class="cartucho" style="background-image: url('dev/IMG/Site/Cartuchos/cartuchoVermelhin.png');"></div>
-                                </a>
-                            </div>
-
+                        <div id="search-results-container" class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+                            <?php while ($j = $jogos->fetch_assoc()): ?>
+                                <div class="col d-flex justify-content-center">
+                                    <a href="jogo.php?id=<?= $j['ID_Jogo'] ?>" title="<?= $j['Nome'] ?>">
+                                        <div class="cartucho" style="background-image: url(<?= htmlspecialchars($j['Caminho']) ?>);"></div>
+                                    </a>
+                                </div>
+                            <?php endwhile; ?>
                         </div>
                     </div>
                 </div>
@@ -130,7 +106,7 @@ $jogos = $result->fetch_assoc();
         </div>
         <?php include_once DEV_PATH . 'views/footer.php'?>
 
-        <?php if ($id_user): // ATUALIZAR PARA SE ENCAIXAR NO NOSSO PADRÃO DE DESING?>
+        <?php if ($id_user): ?>
         <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content modal-retro">
@@ -183,11 +159,13 @@ $jogos = $result->fetch_assoc();
         <script>
             // --- NOVA LÓGICA PARA TOGGLE DE CONTRASTE E SOM ---
             document.addEventListener('DOMContentLoaded', function() {
-                const contrastBtn = document.getElementById('toggle-contrast-btn');
-                const soundBtn = document.getElementById('toggle-sound-btn');
-                
                 let isContrastOn = false;
                 let isSoundOn = true; 
+                let searchResults = [];
+                const contrastBtn = document.getElementById('toggle-contrast-btn');
+                const soundBtn = document.getElementById('toggle-sound-btn');
+                const buscaJogoInput = document.getElementById('busca_jogo');
+                const searchResultsContainer = document.getElementById('search-results-container');
 
                 // Função para Contraste
                 contrastBtn.addEventListener('click', function(e) {
@@ -223,7 +201,36 @@ $jogos = $result->fetch_assoc();
                         mostrarToast('Musica Desativada', 'success');
                     }
                 });
+
+                function renderSearchResults(results) {
+                    searchResultsContainer.innerHTML = '';
+
+                    if (!Array.isArray(results) || results.length === 0) {
+                        searchResultsContainer.innerHTML = '<p class="text-center text-white">Nenhum jogo encontrado com esse nome.</p>';
+                        return;
+                    }
+
+                    results.forEach(item => {
+                        const col = document.createElement('div');
+                        col.className = 'col d-flex justify-content-center';
+                        col.innerHTML = `
+                            <a href="jogo.php?id=${item.ID_Jogo}" title="${item.Nome}">
+                                <div class="cartucho" style="background-image: url('${item.Caminho}');"></div>
+                            </a>
+                        `;
+                        searchResultsContainer.appendChild(col);
+                    });
+                }
+
+                buscaJogoInput.addEventListener('keyup', function() {
+                    const query = this.value;
+                    fetch(`dev/exec/busca_jogos.php?jogo=${query}`)
+                        .then(response => response.json())
+                        .then(data => renderSearchResults(data))
+                        .catch(error => console.error('Erro ao buscar jogos:', error));
+                });
             });
+            
         </script>
         <?php if ($id_user): ?>
         <script>

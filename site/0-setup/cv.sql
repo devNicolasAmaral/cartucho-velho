@@ -10,7 +10,7 @@ USE `cv`;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `USUARIOS` (
     `ID_Usuario` INT AUTO_INCREMENT PRIMARY KEY,
-    `Nome` VARCHAR(255) NOT NULL,
+    `Email` VARCHAR(255) NOT NULL,
     `User` VARCHAR(20) DEFAULT NULL,
     `Senha` VARCHAR(100) NOT NULL,
     `Foto_Perfil` VARCHAR(255) DEFAULT NULL,

@@ -1,0 +1,353 @@
+/* --- ESTILOS BASE (ADAPTADOS DO SEU CSS ORIGINAL) --- */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'VT323', monospace; /* Fonte padrão do seu projeto */
+    background-color: #f0f2f5; /* Um fundo neutro para a caixa de login se destacar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Press Start 2P', cursive;
+    font-weight: bold;
+    margin: 0;
+    font-size: 2em;
+    color: #333;
+}
+
+p {
+    font-size: 18px;
+    font-weight: 100;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    margin: 20px 0 30px;
+}
+
+span {
+    font-size: 16px;
+    color: #666;
+}
+
+a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+}
+
+.banner {
+    background: linear-gradient(90deg, #c0c0c0 0%, #999999ff 100%);
+    border: 3px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+    width: 100%;
+}
+
+.banner a {
+    text-decoration: none;
+    font-size: larger;
+}
+
+.banner .bdentro {
+    max-height: 50px;
+}
+
+.fechar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    background: linear-gradient(90deg, #c0c0c0 0%, #999999ff 100%);
+    border: 3px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+}
+
+.fechar a {
+    padding-right: 2px;
+    padding-top: 1px;
+}
+
+.popup {
+    background: linear-gradient(90deg, #c0c0c0 0%, #999999ff 100%);
+    border: 2px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+    font-size: 24px;
+    height: 150px;
+    width: 250px;
+    transition: all 0.1s;
+}
+
+.popup-banner {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    background: linear-gradient(90deg, #c0c0c0 0%, #999999ff 100%);
+    border: 3px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+    font-size: 18px;
+    max-height: 38px;
+}
+
+.popup-banner .bi-exclamation-square-fill {
+    margin-top: 7px;
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+}
+
+.popup-banner .m-1 {
+    gap: 7px;
+    display: flex;
+    align-items: center;
+}
+
+.popup-banner .fechar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 27px !important;
+    height: 27px !important;
+}
+
+.popup-banner .fechar p {
+    display: flex;
+    align-items: center;
+    padding-left: 9px;
+    padding-top: 11px;
+}
+
+.popup-btn-div {
+    margin-top: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-btn {
+    margin: 0 !important;
+    background: linear-gradient(90deg, #350BAB 0%, #5792E5 100%);
+    color: white;
+    border-radius: 0px;
+    border: 3px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #2b2b2b;
+    border-bottom-color: #2b2b2b;
+    font-size: 24px;
+    transition: all 0.2s;
+}
+
+.popup-btn:hover {
+    background: linear-gradient(90deg, #340f99ff 0%, #5081c5ff 100%);
+    color: white;
+    border: 3px solid;
+    border-top-color: #8d8d8d;
+    border-left-color: #8d8d8d;
+    border-right-color: #000000;
+    border-bottom-color: #000000;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px;
+    font-family: 'VT323', monospace !important;
+    font-size: 20px;
+}
+
+.bfora {
+    border: 4px solid;
+    border-top-color: #4d4d4d;
+    border-left-color: #4d4d4d;
+    border-right-color: #c9c9c9;
+    border-bottom-color: #c9c9c9;
+}
+
+input {
+    border-radius: 0px !important;
+    border: 3px solid;
+    border-top-color: #c0c0c0;
+    border-left-color: #c0c0c0;
+    border-right-color: #2b2b2b;
+    border-bottom-color: #2b2b2b;
+}
+
+/* --- ESTRUTURA PRINCIPAL --- */
+.container {
+    background-color: #fff;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-height: 480px;
+}
+
+.form-container {
+    position: absolute;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+    background: linear-gradient(90deg, #c0c0c0 0%, #999999ff 100%);
+}
+
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.div-btn {
+    border: 4px solid;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-top-color: #c9c9c9;
+    border-left-color: #c9c9c9;
+    border-right-color: #2b2b2b;
+    border-bottom-color: #2b2b2b;
+    width: 180px;
+}
+
+.btn-custom {
+    margin: 0 !important;
+    width: 172px;
+    background: linear-gradient(90deg, #350BAB 0%, #5792E5 100%);
+    color: white;
+    border-radius: 0px;
+    border: 3px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #2b2b2b;
+    border-bottom-color: #2b2b2b;
+    font-size: 24px;
+}
+
+.btn-custom:hover {
+    background: linear-gradient(90deg, #340f99ff 0%, #5081c5ff 100%);
+    color: white;
+    border: 3px solid;
+    border-top-color: #8d8d8d;
+    border-left-color: #8d8d8d;
+    border-right-color: #000000;
+    border-bottom-color: #000000;
+}
+
+/* --- OVERLAY (PAINEL DA IMAGEM QUE DESLIZA) --- */
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.overlay {
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../IMG/Site/autenticacao-bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: #FFFFFF;
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+
+/* --- LÓGICA DA ANIMAÇÃO --- */
+.container.right-panel-active .sign-in-container {
+    transform: translateX(100%);
+}
+
+.container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+    0%, 49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+.container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}

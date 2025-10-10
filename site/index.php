@@ -10,7 +10,7 @@ $id_user = $_SESSION['ID_Usuario'] ?? null;
 $user = null;
 
 if ($id_user) {
-    $sqlUser = "SELECT Nome, Foto_Perfil FROM USUARIOS WHERE ID_Usuario = ?";
+    $sqlUser = "SELECT User, Foto_Perfil FROM USUARIOS WHERE ID_Usuario = ?";
     $stmtUser = $conn->prepare($sqlUser);
     $stmtUser->bind_param("i", $id_user);
     $stmtUser->execute();
@@ -67,8 +67,8 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
                                     <img class="img-fluid" src="<?php echo PERFIL_PLACEHOLDER?>" alt="Foto do Usuário" width="50" height="50">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-retro">
-                                    <li><a class="dropdown-item" href="login.php"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
-                                    <li><a class="dropdown-item" href="cadastro.php"><i class="bi bi-person-plus-fill me-2"></i>Cadastrar</a></li>
+                                    <li><a class="dropdown-item" href="autenticacao.php?action=login"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
+                                    <li><a class="dropdown-item" href="autenticacao.php?action=cadastro"><i class="bi bi-person-plus-fill me-2"></i>Cadastrar</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="#" id="toggle-contrast-btn"><i class="bi bi-highlights me-2"></i></i>Ativar Contraste</a></li>
                                     <li><a class="dropdown-item" href="#" id="toggle-sound-btn"><i class="bi bi-volume-mute-fill me-2"></i>Desativar Som</a></li>
@@ -170,6 +170,20 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
                 const buscaJogoInput = document.getElementById('busca_jogo');
                 const searchResultsContainer = document.getElementById('search-results-container');
                 const btnSom = document.getElementById('som');
+                btnSom.volume = 0.2;
+
+                const promise = btnSom.play();
+
+                if (promise !== undefined) {
+                    promise.then(_ => {
+                        console.log('Autoplay iniciado com sucesso.');
+                    }).catch(error => {
+                        console.log('Autoplay bloqueado pelo navegador. Esperando interação do usuário.');
+                        document.body.addEventListener('click', function() {
+                            btnSom.play();
+                        }, { once: true }); 
+                    });
+                }
 
                 // Função para Contraste
                 contrastBtn.addEventListener('click', function(e) {

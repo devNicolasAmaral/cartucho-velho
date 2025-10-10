@@ -7,11 +7,11 @@ include_once 'config.php';
 include 'conexao_banco.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $user = $_POST["user"];
-    $password = $_POST["password"];
+    $user = $_POST["user-login"];
+    $password = $_POST["password-login"];
 
     $stmt = $conn->prepare("SELECT ID_Usuario,
-                                   Nome,
+                                   User,
                                    Senha
                             FROM USUARIOS 
                             WHERE User = ?");
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (password_verify($password, $passHash)) {
             $_SESSION['ID_Usuario'] = $dados['ID_Usuario'];
-            $_SESSION['Nome'] = $dados['Nome'];
+            $_SESSION['Nome'] = $dados['User'];
             $_SESSION['expire'] = strtotime('+300 minutes', strtotime('now'));
 
             $_SESSION["msg"] = ['texto' => "Olá " . htmlspecialchars($_SESSION['Nome']) . ", Login efetuado com sucesso!", 'tipo' => 'success'];

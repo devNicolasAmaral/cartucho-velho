@@ -1,0 +1,22 @@
+{
+    "name": "raisa/cartucho-velho",
+    "autoload": {
+        "psr-4": {
+            "Raisa\\CartuchoVelho\\": "site/libraries/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Raisa Silva"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11.5",
+        "symfony/phpunit-bridge": "^7.3"
+    }
+}

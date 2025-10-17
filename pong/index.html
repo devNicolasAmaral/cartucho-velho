@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Jogo Pong</title>
+    <meta name="keywords" content="Pong, Jogo">
+    <meta name="description" content="Jogo Pong é um site dedicado ao bom e velho jogo de pong.">
+    <link rel="stylesheet" type="text/css" href="game.css">
+    <link rel="canonical" href="https://www.ponggame.org/">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Estilos foram mantidos como no original para preservar o layout */
+        a.link1:link {color:blue;font-weight:bold;text-decoration:none;}
+        a.link1:visited {color:blue;font-weight:bold;text-decoration:none;}
+        a.link1:hover {color:green;}
+        a.link2:link {color:black;font-weight:bold;text-decoration:none;}
+        a.link2:visited {color:black;font-weight:bold; text-decoration:none;}
+        a.link2:hover {color:green;}
+        .widediv{width:100%;}
+
+        @media only screen and (max-width: 1020px) {
+            .respAd{width:100%;height:100px;text-align:center;}
+            .adSep{display:none;}
+            .wrapper{display:block;}
+            h1{display:inline;color:black;font-size:22px;}
+            body{margin:0px;font-family:sans-serif;font-style:normal;font-size:16px;background-color:white;color: black;}
+            .maintab{text-align:center;}
+            .leftdiv{text-align:center;width:100%}
+            .rightdiv{width:100%;min-height:136px;}
+            .footerIndexText{text-align:center;clear:both;line-height:28px;}
+            #areaJogo{margin-left:auto;margin-right:auto; max-width:100%;} /* ID traduzido */
+        }
+
+        @media only screen and (min-width: 1020px) {
+            .textpage{padding:10px;}
+            .wrapper{display:block}
+            h1{display:inline;color:black;font-size:20px;}
+            body{margin:0px;font-family:sans-serif;font-style:normal;font-size:13px;background-image:url(art/background.jpg);background-color:white;color: black;}
+            .maintab{text-align:center;width:1000px;margin:auto;border-style:solid;border-color:gray;border-top-width:0px;border-bottom-width:2px;border-right-width:2px;border-left-width:2px;background-color:white;color:#222222;font-weight:bold;font-size:14px;}
+            .leftdiv{width:694px;padding:4px;float:left;}
+            .rightdiv{width:276px;float:right;height:700px;}
+            .footerIndexText{text-align:center;clear:both}
+        }
+    </style>
+</head>
+<body>
+<noscript>
+Para jogar, por favor, ative o JavaScript no seu navegador.
+</noscript>
+<div class="maintab">
+<br>
+<div class="wrapper">
+<div class="rightdiv">
+    </div>
+
+<div class="leftdiv">
+<h1>Jogo Pong</h1><br>
+
+<div id="areaJogo">
+	<div id="telaModoJogo" class="divTelaJogo" style="display: none;">
+		<button onclick="definirModoDeJogo(true);"><span class="teclaBotao">(1)&nbsp;</span>Um Jogador</button>
+		<button onclick="definirModoDeJogo(false);"><span class="teclaBotao">(2)&nbsp;</span>Dois Jogadores</button>
+		
+		<div id="botaoOpcoes" onclick="abrirOpcoes();">Opções</div>
+		<div id="divVitorias">VITÓRIAS (UM JOGADOR): <span id="estatisticasVitorias">0 DE 0</span> <span id="botaoResetarEstatisticas" style="cursor:pointer;" onclick="resetarEstatisticasGerais();">(resetar)</span></div>
+	</div>
+	
+	<div id="telaOpcoesJogo" class="painelOpcoes" style="display: none; text-align: center;">
+		<div class="opcaoUnica">
+			Pontuação para Vencer<br>
+			<button id="pontuacao3" onclick="definirPontuacaoParaVencer(3);">3</button>
+			<button id="pontuacao5" onclick="definirPontuacaoParaVencer(5);">5</button>
+			<button id="pontuacao10" onclick="definirPontuacaoParaVencer(10);" class="selecionado">10</button>
+			<button id="pontuacao15" onclick="definirPontuacaoParaVencer(15);">15</button>
+			<button id="pontuacao20" onclick="definirPontuacaoParaVencer(20);">20</button>
+		</div>
+		<div class="opcaoUnica">
+			Bola mais Lenta no Saque<br>
+			<button id="saque0" onclick="definirSaqueLento(false);">Não</button>
+			<button id="saque1" onclick="definirSaqueLento(true);" class="selecionado">Sim</button>
+		</div>
+		<div class="opcaoUnica">
+			Sensibilidade do Teclado<br>
+			<button id="sensibilidade-3" onclick="definirSensibilidadeTeclado(-3);">Baixa</button>
+			<button id="sensibilidade0" onclick="definirSensibilidadeTeclado(0);" class="selecionado">Normal</button>
+			<button id="sensibilidade3" onclick="definirSensibilidadeTeclado(3);">Alta</button>
+		</div>
+		<div class="opcaoUnica">
+			Quem Começa Após um Ponto<br>
+			<button id="inicio1" onclick="definirRegraDeInicio(1);" style="width:180px">O Jogador que pontuou</button>
+			<button id="inicio0" onclick="definirRegraDeInicio(0);" style="width:160px;" class="selecionado">Alternar</button>
+			<button id="inicio2" onclick="definirRegraDeInicio(2);" style="width:180px;">O outro Jogador</button>
+		</div>
+		<div class="opcaoUnica" style="margin-top:20px;">
+			<button onclick="resetarOpcoes();">Resetar</button>
+			<button onclick="mostrarTelaPrincipal();">Voltar</button>
+		</div>
+	</div>
+
+	<div id="telaModoControle" class="divTelaJogo" style="display:none;">
+		<button onclick="definirModoControle(0);"><span class="teclaBotao">(k)&nbsp;</span>Teclado</button>
+		<button onclick="definirModoControle(1);"><span class="teclaBotao">(m)&nbsp;</span>Mouse</button>
+		<div id="divInstrucoesUmJogador" style="display: block;">
+			P - PAUSAR<br>
+			ESC - SAIR
+		</div>
+	</div>
+	
+	<div id="telaDificuldade" class="divTelaJogo" style="font-size: 18px; display: flex;">
+		<button id="botaoDificuldadeFacil" onclick="definirDificuldade(0);"><span class="teclaBotao">(e)&nbsp;</span>Fácil</button>
+		<button onclick="definirDificuldade(1);"><span class="teclaBotao">(m)&nbsp;</span>Médio</button>
+		<button id="botaoDificuldadeDificil" onclick="definirDificuldade(2);"><span class="teclaBotao">(h)&nbsp;</span>Difícil</button>
+		<div id="divInstrucoesDoisJogadores" style="display: none;">
+			JOGADOR 1 - S e X<br>
+			JOGADOR 2 - SETAS<br>
+			P - PAUSAR<br>
+			ESC - SAIR
+		</div>
+		<div id="envolveBotaoSom">
+			<button id="botaoSom" class="somDesligado" onclick="alternarSom();" aria-label="Alternar Som"></button>
+			<label for="botaoSom" class="labelBotaoSom">SOM</label>
+		</div>
+	</div>
+	
+	<div id="telaJogo" class="divTelaJogo" style="display:none;">
+		<div class="envolvePlacar">
+			<div id="pontuacaoJogador1">0</div>
+			<div id="pontuacaoJogador2">0</div>
+		</div>
+		<div id="divPausa">Pausado, pressione P para continuar</div>
+		<canvas id="canvasJogo" width="650" height="480"></canvas>
+	</div>
+	
+	<div id="telaFimJogo" style="display:none;">
+		<div id="mensagemVitoria">VENCEU</div>
+		<button onclick="iniciarJogoDaTelaFinal();"><span class="teclaBotao">(r)&nbsp;</span>Jogar Novamente</button>
+		<button onclick="mostrarTelaPrincipal();"><span class="teclaBotao">(esc)&nbsp;</span>Menu Principal</button>
+	</div>
+</div>
+
+<script src="PongGame.js"></script> 
+<script> mostrarTelaPrincipal();</script>
+<br><br>
+
+</div>
+</div>
+<div class="footerIndexText">
+<hr>
+<a href="contact" class="link1">Contato</a><br>Ao usar este site, você concorda com os <a href="terms" class="link1">Termos de Uso</a> | <a href="privacy-policy" class="link1">Política de Privacidade</a>
+</div>
+<br>
+</div>
+<br><br><br>
+
+</body>
+</html>

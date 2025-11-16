@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Noto+Serif+Gurmukhi:wght@300&family=Pacifico&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --pink: #ef4556;
+    --winning: rgba(255, 180, 208, 0.926);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 97vh;
+    background-color: #f7f7f7;
+    background-image: url("../img/background.png");
+}
+
+header {
+    top: 0;
+    display: block;
+}
+.title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+    font-family: 'Pacifico', cursive;
+    font-size: 25px;
+    font-weight: lighter;
+}
+
+.main-title a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.logo {
+    height: 150px;
+}
+
+.top-container {
+    display: flex;
+    grid-gap: 50px;
+    justify-items: center;
+    margin-bottom: 10px;
+}
+
+.top-round {
+    display: flex;
+    flex-direction: row;
+}
+
+.roundCounter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.rodadaText {
+    display: block;
+    font-family: 'Pacifico', cursive;
+    font-size: 30px;
+    margin-right: 10px;
+    color: #10A57F;
+}
+
+.rodadaCount {
+    display: block;
+    font-family: 'Pacifico', cursive;
+    font-size: 30px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1500px;
+    margin: 0 0 80px;
+}
+
+.side-panel {
+    text-align: center;
+    margin-left: 90px;
+    margin-right: 90px;
+    width: 174px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+button {
+    background-color: #10A57F;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 40px;
+    width: 120px;
+    font-family: 'Pacifico', cursive;
+    font-size: 20px;
+    font-weight: lighter;
+}
+
+.button:hover, #elementcadPlayer1:hover, 
+#elementcadPlayer2:hover, .menuButton:hover,
+.title:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.button a {
+    text-decoration: none;
+    color: white;
+}
+
+.menuButton {
+    background-color: #F77985;
+}
+
+.menuButton a {
+    text-decoration: none;
+    color: white;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);   
+}
+
+.cell {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 87px;
+    cursor: pointer;
+    color: #F84E5B;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    font-family: 'Pacifico', cursive;
+}
+
+.cell:nth-child(3n) {
+    border-right: none;
+}
+
+.cell:nth-child(6) ~ .cell {
+    border-bottom: none;
+}
+
+.player-name {
+    font-size: 30px;
+    font-family: 'Pacifico', cursive;
+    color: #96514F;
+}
+
+#player1, #player2 {
+    display: flex;
+    margin-top: 5px;
+    font-family: 'Pacifico', cursive;
+}
+
+input {
+    border-radius: 10px;
+    border-width: 1px;
+}
+
+::placeholder {
+    text-align: center;
+    color: #F77985;
+}
+
+.player1-wins, .player2-wins {
+    display: block;
+    font-family: 'Pacifico', cursive;
+    font-size: 30px;
+}
+
+.scoreboard {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.footer {
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    transition: 1s;
+    width: 100%;
+    height: 60px;
+    bottom: 0;
+}
+
+.designer {
+    color: #015941;
+}
+
+@media screen and (max-width: 1163px) {
+    .side-panel {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+}
+
+@media screen and (max-width: 1056px) {
+    .cell {
+        width: 50px;
+        height: 50px;
+        font-size: 47px;
+    }
+}
+
+@media screen and (max-width: 945px) {
+    body {
+        background-image: url("/img/backgroundsemiresponsive.png")
+    }
+    
+    .side-panel {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+}
+
+@media screen and (max-width: 791px) {
+    body {
+        background-image: url("/img/backgroundresponsive.jpg");
+        height: 165vh;
+    }
+    
+    .container {
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .side-panel {
+        margin-bottom: 50px;
+        margin-top: 50px;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+    
+    .top-container {
+        margin: 0;
+        margin-bottom: 50px;
+    }
+
+    .cell {
+        width: 90px;
+        height: 90px;
+        font-size: 87px;
+    }
+    
+    .rodadaText {
+        margin: 0;
+    }
+
+    .rodadaCounter {
+        justify-content: space-evenly;
+    }
+}

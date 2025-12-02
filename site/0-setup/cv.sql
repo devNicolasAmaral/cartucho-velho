@@ -21,19 +21,20 @@ CREATE TABLE IF NOT EXISTS `USUARIOS` (
 /* select * from USUARIOS; */
 
 -- -----------------------------------------------------
--- Table `JOGOS`
+-- Table JOGOS
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `JOGOS` (
-    `ID_Jogo` INT AUTO_INCREMENT PRIMARY KEY,
-    `Nome` VARCHAR(255) NOT NULL,
-    `Descrição` VARCHAR(255) DEFAULT NULL,
-    `Caminho` VARCHAR(100) DEFAULT NULL,
-    `Script` LONGTEXT DEFAULT NULL,
-    `Data_Upload` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `Data_Alteracao` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS JOGOS (
+    ID_Jogo INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(255) NOT NULL,
+    Descrição VARCHAR(255) DEFAULT NULL,
+    Caminho VARCHAR(100) DEFAULT NULL,
+    Script LONGTEXT DEFAULT NULL,
+    Data_Upload DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Data_Alteracao DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 /* drop table JOGOS; */
 /* select * from JOGOS; */
+
 
 -- -----------------------------------------------------
 -- Table `IMAGENS`

@@ -6,7 +6,7 @@ define('NOME', 'Cartucho Velho');
 define('DEV_PATH', dirname(__DIR__). '/');
 
 // URL base 
-define('BASE_URL', 'http://localhost/htdocs/cartucho-velho/site/');
+define('BASE_URL', 'http://localhost/cartucho-velho/site/');
 define('DEV_URL', BASE_URL . 'dev/');
 define('IMG_PLACEHOLDER', DEV_URL . 'IMG/Site/sem-img.png');
 define('PERFIL_PLACEHOLDER', DEV_URL . 'IMG/Site/sem-perfil.jpg');
@@ -15,7 +15,7 @@ define('PERFIL_PLACEHOLDER', DEV_URL . 'IMG/Site/sem-perfil.jpg');
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'cv');
 define('DB_USER', 'root');
-define('DB_PASS', '1705');
+define('DB_PASS', '591318362');
 
 // Timezone (opcional mas recomendado)
 date_default_timezone_set('America/Sao_Paulo');

@@ -38,7 +38,7 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
     </head>
     <body class="d-flex flex-column min-vh-100">
         <audio autoplay loop id="som" class="d-none">
-            <source src="dev/MUSIC/bg-music.flac" type="audio/mpeg">
+            <source src="site/dev/MUSIC/bg-music.flac" type="audio/mpeg">
         </audio>
         <div class="content flex-grow-1">
             <div class="container-fluid p-2">

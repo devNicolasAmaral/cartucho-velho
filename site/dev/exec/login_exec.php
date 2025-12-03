@@ -36,14 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         else {
             $_SESSION["msg"] = ['texto' => 'Usuário ou senha estão incorretos', 'tipo' => 'danger'];
             mysqli_close($conn);
-            header('Location:' . BASE_URL . 'login.php');
+            header('Location:' . BASE_URL . 'autenticacao.php');
             exit;
         }
     }
     else {
         $_SESSION["msg"] = ['texto' => 'Usuário ou senha estão incorretos', 'tipo' => 'danger'];
         mysqli_close($conn);
-        header('Location:' . BASE_URL . 'login.php');
+        header('Location:' . BASE_URL . 'autenticacao.php');
         exit;
     }
 }

@@ -24,17 +24,17 @@ CREATE TABLE IF NOT EXISTS `USUARIOS` (
 -- Table JOGOS
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS JOGOS (
-    ID_Jogo INT AUTO_INCREMENT PRIMARY KEY,
-    Nome VARCHAR(255) NOT NULL,
-    Descrição VARCHAR(255) DEFAULT NULL,
-    Caminho VARCHAR(100) DEFAULT NULL,
-    Script LONGTEXT DEFAULT NULL,
-    Data_Upload DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Data_Alteracao DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    `ID_Jogo` INT AUTO_INCREMENT PRIMARY KEY,
+    `Nome` VARCHAR(255) NOT NULL,
+    `Descrição` TEXT DEFAULT NULL,
+    `Curiosidades` TEXT DEFAULT NULL,
+    `Caminho` VARCHAR(100) DEFAULT NULL,
+    `Script` VARCHAR(100) DEFAULT NULL,
+    `Data_Upload` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `Data_Alteracao` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 /* drop table JOGOS; */
 /* select * from JOGOS; */
-
 
 -- -----------------------------------------------------
 -- Table `IMAGENS`
@@ -47,3 +47,18 @@ CREATE TABLE IF NOT EXISTS `IMAGENS` (
 ) ENGINE = InnoDB;
 /* drop table IMAGENS; */
 /* select * from IMAGENS; */
+
+-- -----------------------------------------------------
+-- Table `COMENTARIOS`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COMENTARIOS` (
+    `ID_Comentario` INT AUTO_INCREMENT PRIMARY KEY,
+    `ID_Jogo` INT NOT NULL,
+    `ID_Usuario` INT NOT NULL,
+    `Texto` TEXT NOT NULL,
+    `Data_Comentario` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`ID_Jogo`) REFERENCES `JOGOS` (`ID_Jogo`) ON DELETE CASCADE,
+    FOREIGN KEY (`ID_Usuario`) REFERENCES `USUARIOS` (`ID_Usuario`) ON DELETE CASCADE
+) ENGINE = InnoDB;
+/* drop table COMENTARIOS; */
+/* select * from COMENTARIOS; */

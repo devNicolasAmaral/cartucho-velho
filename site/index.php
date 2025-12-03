@@ -18,7 +18,7 @@ if ($id_user) {
     $user = $resultUser->fetch_assoc();
 }
 
-$jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORDER BY Nome");
+$jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho, Script FROM JOGOS ORDER BY Nome");
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -97,7 +97,7 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
                         <div id="search-results-container" class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
                             <?php while ($j = $jogos->fetch_assoc()): ?>
                                 <div class="col d-flex justify-content-center">
-                                    <a href="./jogos/jogo.php?jogo=<?= $j['Nome'] ?>" title="<?= $j['Nome'] ?>">
+                                    <a href="./jogo.php?jogo=<?= $j['Script'] ?>" title="<?= $j['Nome'] ?>">
                                         <div class="cartucho" style="background-image: url(<?= htmlspecialchars($j['Caminho']) ?>);"></div>
                                     </a>
                                 </div>
@@ -108,6 +108,9 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
             </div>
         </div>
         <?php include_once DEV_PATH . 'views/footer.php'?>
+
+        <!-- Toast -->
+        <?php include_once DEV_PATH . 'views/toast.php'?>
 
         <?php if ($id_user): ?>
         <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
@@ -147,6 +150,7 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
         <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
         <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="<?= DEV_URL ?>JS/toast.js"></script>
         <script>
             // --- NOVA LÓGICA PARA TOGGLE DE CONTRASTE E SOM ---
             document.addEventListener('DOMContentLoaded', function() {
@@ -300,7 +304,6 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
             });
         </script>
         <?php endif; ?>
-        <script src="<?= DEV_URL ?>JS/toast.js"></script>
         <script>
             <?php
             if (isset($_SESSION['msg']) && is_array($_SESSION['msg'])) {

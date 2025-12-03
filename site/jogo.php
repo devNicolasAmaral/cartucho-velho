@@ -3,7 +3,7 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include "../dev/exec/config.php";
+include "./dev/exec/config.php";
 include DEV_PATH . "exec/conexao_banco.php";
 
 $id_user = $_SESSION['ID_Usuario'] ?? null;
@@ -17,6 +17,55 @@ if ($id_user) {
     $resultUser = $stmtUser->get_result();
     $user = $resultUser->fetch_assoc();
 }
+
+// --- LÓGICA PARA CARREGAR DADOS DO JOGO ---
+$gameData = null;
+$id_jogo_atual = $_GET['id'] ?? null;
+$slug_jogo = $_GET['jogo'] ?? null;
+
+if ($id_jogo_atual) {
+    // Busca pelo ID
+    $sqlGame = "SELECT * FROM JOGOS WHERE ID_Jogo = ?";
+    $stmtGame = $conn->prepare($sqlGame);
+    $stmtGame->bind_param("i", $id_jogo_atual);
+    $stmtGame->execute();
+    $gameData = $stmtGame->get_result()->fetch_assoc();
+}
+elseif ($slug_jogo) {
+    // Fallback: Se tiver apenas o slug na URL (ex: ?jogo=pong), tenta achar pelo nome ou script
+    // Ajuste essa query conforme seu banco real se usar slug
+    $sqlGame = "SELECT * FROM JOGOS WHERE Script LIKE ? LIMIT 1";
+    $slugLike = "%" . $slug_jogo . "%";
+    $stmtGame = $conn->prepare($sqlGame);
+    $stmtGame->bind_param("s", $slugLike);
+    $stmtGame->execute();
+    $gameData = $stmtGame->get_result()->fetch_assoc();
+    if ($gameData) $id_jogo_atual = $gameData['ID_Jogo'];
+}
+
+// Se não achou jogo, define dados padrão para não quebrar a tela
+if (!$gameData) {
+    $gameData = [
+        'Nome' => 'Jogo Desconhecido',
+        'Descricao' => 'Dados do jogo não encontrados.',
+        'Curiosidades' => 'Sem curiosidades registradas.',
+        'Script' => $slug_jogo ? $slug_jogo . '.js' : ''
+    ];
+}
+
+// --- CARREGAR COMENTÁRIOS ---
+$comentarios = [];
+if ($id_jogo_atual) {
+    $sqlComents = "SELECT C.*, U.User, U.Foto_Perfil 
+                   FROM COMENTARIOS C 
+                   JOIN USUARIOS U ON C.ID_Usuario = U.ID_Usuario 
+                   WHERE C.ID_Jogo = ? 
+                   ORDER BY C.Data_Comentario DESC";
+    $stmtComents = $conn->prepare($sqlComents);
+    $stmtComents->bind_param("i", $id_jogo_atual);
+    $stmtComents->execute();
+    $comentarios = $stmtComents->get_result();
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +73,7 @@ if ($id_user) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tela do Jogo</title>
+        <title>Jogar: <?= htmlspecialchars($gameData['Nome']) ?></title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,11 +83,11 @@ if ($id_user) {
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/index.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/modal-retro.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/toast-retro.css">
-        <link rel="stylesheet" type="text/css" href="./game.css">
+        <link rel="stylesheet" type="text/css" href="./jogos/game.css">
     </head>
     <body class="d-flex flex-column min-vh-100">
         <audio autoplay loop id="som" class="d-none">
-            <source src="../dev/MUSIC/bg-music.flac" type="audio/mpeg">
+            <source src="<?= DEV_URL ?>/MUSIC/bg-music.flac" type="audio/mpeg">
         </audio>
         <div class="content flex-grow-1">
             <div class="container-fluid p-2" style="margin-bottom: 50px;">
@@ -62,7 +111,7 @@ if ($id_user) {
                                     <li><a class="dropdown-item" href="#" id="toggle-contrast-btn"><i class="bi bi-highlights me-2"></i></i>Ativar Contraste</a></li>
                                     <li><a class="dropdown-item" href="#" id="toggle-sound-btn"><i class="bi bi-volume-mute-fill me-2"></i>Desativar Som</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="dev/exec/logoff_exec.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
+                                    <li><a class="dropdown-item" href="<?= DEV_URL ?>exec/logoff_exec.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
                                 </ul>
                             </div>
                         <?php else: // --- DROPDOWN DO VISITANTE --- ?>
@@ -82,21 +131,101 @@ if ($id_user) {
                     </div>
                 </div>
             </div>
-            <div style="background-image: url(<?= DEV_URL ?>IMG/Site/Monitor.png); background-repeat: no-repeat; background-position: center;  background-size: 59%; padding-top: auto; padding-bottom: 50px; z-index: 2; position: relative;">
-                <div class="d-flex justify-content-center align-itens-center">
-                    <div class="window-wrapper">
-                        <div class="title-bar">
-                            <div class="title-bar-text" id="windowTitle">Carregando...</div>
-                            <div class="title-bar-controls">
-                                <button aria-label="Minimize"></button>
-                                <button aria-label="Maximize"></button>
-                                <button aria-label="Close"></button>
+            <div class="container mb-5">
+                
+                <!-- ÁREA DO JOGO (Monitor) -->
+                <div class="row justify-content-center aling-itens-center mb-4">
+                    <div class="col-12 col-lg-6">
+                        <div class="window-game">
+                            <div class="title-bar">
+                                <div class="title-bar-text" id="windowTitle"><?= htmlspecialchars($gameData['Nome']) ?>.exe</div>
+                                <div class="title-bar-controls">
+                                    <button aria-label="Minimize"></button>
+                                    <button aria-label="Maximize"></button>
+                                    <button aria-label="Close" onclick="window.location.href='index.php'"></button>
+                                </div>
+                            </div>
+                            <div class="window-body">
+                                <div id="game-root">
+                                    <div class="d-flex justify-content-center align-items-center h-100">
+                                        <p class="text-white">Carregando Jogo...</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="window-body">
-                            <div id="game-root">
-                                <div style="text-align:center; padding: 20px;">
+                <!-- ÁREA DE INFORMAÇÕES E COMENTÁRIOS -->
+                <div class="row">
+                    <!-- Coluna Esquerda: Descrição e Curiosidades -->
+                    <div class="col-md-7 mb-3">
+                        <div class="window-wrapper h-100">
+                            <div class="title-bar">
+                                <div class="title-bar-text">README.TXT - Informações</div>
+                            </div>
+                            <div class="window-body h-100">
+                                <div class="retro-text-panel">
+                                    <h4 class="retro-section-title">> Descrição do Jogo:</h4>
+                                    <p>
+                                        <?= nl2br(htmlspecialchars($gameData['Descricao'] ?? 'Sem descrição disponível.')) ?>
+                                    </p>
+                                    <hr style="border-top: 2px dashed #808080;">
+                                    <h4 class="retro-section-title">> Curiosidades & Dicas:</h4>
+                                    <p>
+                                        <?= nl2br(htmlspecialchars($gameData['Curiosidades'] ?? 'Nenhuma curiosidade registrada para este cartucho.')) ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coluna Direita: Comentários -->
+                    <div class="col-md-5 mb-3">
+                        <div class="window-wrapper h-100">
+                            <div class="title-bar">
+                                <div class="title-bar-text">BBS - Comentários</div>
+                            </div>
+                            <div class="window-body h-100 d-flex flex-column">
+                                <!-- Lista de Comentários -->
+                                <div class="comments-container flex-grow-1" id="lista-comentarios">
+                                    <?php if ($id_jogo_atual && $comentarios && $comentarios->num_rows > 0): ?>
+                                        <?php while($coment = $comentarios->fetch_assoc()): ?>
+                                            <div class="comment-box">
+                                                <div class="comment-avatar">
+                                                    <img src="<?= ($coment['Foto_Perfil']) ? "dev/".$coment['Foto_Perfil'] : PERFIL_PLACEHOLDER ?>" alt="Avatar">
+                                                </div>
+                                                <div class="comment-content">
+                                                    <div class="comment-header">
+                                                        <span><?= htmlspecialchars($coment['User']) ?></span>
+                                                        <span class="comment-date"><?= date('d/m/y H:i', strtotime($coment['Data_Comentario'])) ?></span>
+                                                    </div>
+                                                    <div><?= nl2br(htmlspecialchars($coment['Texto'])) ?></div>
+                                                </div>
+                                            </div>
+                                        <?php endwhile; ?>
+                                    <?php else: ?>
+                                        <p class="text-center mt-3" style="font-family: 'VT323'; font-size: 18px;">Seja o primeiro a comentar neste cartucho!</p>
+                                    <?php endif; ?>
+                                </div>
+                                <!-- Formulário de Envio -->
+                                <div class="mt-2">
+                                    <form action="<?= DEV_URL ?>exec/comentario_exec.php" method="POST" class="comment-form" id="form-comentario">
+                                        <input type="hidden" name="id_jogo" value="<?= $id_jogo_atual ?>">
+                                        
+                                        <div class="mb-2">
+                                            <textarea name="comentario" rows="3" placeholder="Deixe seu comentário aqui..." required></textarea>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-end">
+                                            <?php if ($id_user): ?>
+                                                <button type="submit">ENVIAR_MSG.EXE</button>
+                                            <?php else: ?>
+                                                <!-- O botão envia mesmo deslogado, o PHP redireciona e mostra o Toast -->
+                                                <button type="submit" title="Você precisa estar logado">ENVIAR_MSG.EXE</button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -105,6 +234,9 @@ if ($id_user) {
             </div>
         </div>
         <?php include_once DEV_PATH . 'views/footer.php'?>
+
+        <!-- Toast -->
+        <?php include_once DEV_PATH . 'views/toast.php'?>
 
         <?php if ($id_user): ?>
         <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
@@ -144,6 +276,7 @@ if ($id_user) {
         <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
         <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="<?= DEV_URL ?>JS/toast.js"></script>
         <script>
             // --- NOVA LÓGICA PARA TOGGLE DE CONTRASTE E SOM ---
             document.addEventListener('DOMContentLoaded', function() {
@@ -152,8 +285,6 @@ if ($id_user) {
                 let searchResults = [];
                 const contrastBtn = document.getElementById('toggle-contrast-btn');
                 const soundBtn = document.getElementById('toggle-sound-btn');
-                const buscaJogoInput = document.getElementById('busca_jogo');
-                const searchResultsContainer = document.getElementById('search-results-container');
                 const btnSom = document.getElementById('som');
                 btnSom.volume = 0.2;
 
@@ -208,33 +339,99 @@ if ($id_user) {
                     }
                 });
 
-                function renderSearchResults(results) {
-                    searchResultsContainer.innerHTML = '';
+                <?php
+                    if (isset($_SESSION['msg']) && is_array($_SESSION['msg'])) {
+                        $texto = addslashes($_SESSION['msg']['texto']);
+                        $tipo = $_SESSION['msg']['tipo'];
+                        
+                        echo "mostrarToast('{$texto}', '{$tipo}');";
 
-                    if (!Array.isArray(results) || results.length === 0) {
-                        searchResultsContainer.innerHTML = '<p class="text-center text-white">Nenhum jogo encontrado com esse nome.</p>';
-                        return;
+                        unset($_SESSION['msg']);
                     }
+                ?>
 
-                    results.forEach(item => {
-                        const col = document.createElement('div');
-                        col.className = 'col d-flex justify-content-center';
-                        col.innerHTML = `
-                            <a href="jogo.php?id=${item.ID_Jogo}" title="${item.Nome}">
-                                <div class="cartucho" style="background-image: url('${item.Caminho}');"></div>
-                            </a>
-                        `;
-                        searchResultsContainer.appendChild(col);
-                    });
+                // SISTEMA DE CARREGAMENTO DE JOGOS (Game Loader)
+            
+                function carregarScriptDoJogo() {
+                    const nomeJogo = "<?= htmlspecialchars($gameData['Script'] ?? '') ?>";
+
+                    if (!nomeJogo) return; // Se não tiver jogo, não faz nada
+
+                    // 2. Cria a tag script dinamicamente
+                    const script = document.createElement('script');
+                    script.src = `./jogos/${nomeJogo}.js`; // Assume que o arquivo chama pong.js
+                    
+                    script.onload = function() {
+                        console.log(`Jogo ${nomeJogo} carregado com sucesso.`);
+                        // O arquivo JS do jogo deve chamar automaticamente sua função de início
+                    };
+
+                    script.onerror = function() {
+                        document.getElementById('game-root').innerHTML = 
+                            "<p style='color:red; text-align:center'>Erro ao carregar o jogo: " + nomeJogo + "</p>";
+                    };
+
+                    document.body.appendChild(script);
                 }
 
-                buscaJogoInput.addEventListener('keyup', function() {
-                    const query = this.value;
-                    fetch(`dev/exec/busca_jogos.php?jogo=${query}`)
+                // Inicia o processo
+                window.onload = carregarScriptDoJogo;
+
+                const commentForm = document.getElementById('form-comentario');
+                const commentsList = document.getElementById('lista-comentarios');
+
+                if (commentForm) {
+                    commentForm.addEventListener('submit', function(e) {
+                        e.preventDefault(); // 1. Impede a página de recarregar
+
+                        const formData = new FormData(this);
+                        const submitBtn = this.querySelector('button[type="submit"]');
+                        const originalBtnText = submitBtn.innerText;
+
+                        // Efeito visual de carregamento retro
+                        submitBtn.disabled = true;
+                        submitBtn.innerText = "ENVIANDO...";
+
+                        fetch(this.action, {
+                            method: 'POST',
+                            body: formData
+                        })
                         .then(response => response.json())
-                        .then(data => renderSearchResults(data))
-                        .catch(error => console.error('Erro ao buscar jogos:', error));
-                });
+                        .then(data => {
+                            // 2. Verifica se o backend pediu redirecionamento (caso não logado)
+                            if (data.redirect) {
+                                window.location.href = 'autenticacao.php?action=login';
+                                return;
+                            }
+
+                            if (data.success) {
+                                // 3. Injeta o HTML do novo comentário no TOPO da lista (afterbegin)
+                                if (data.html) 
+                                    commentsList.insertAdjacentHTML('afterbegin', data.html);
+
+                                // Limpa o campo de texto
+                                commentForm.querySelector('textarea').value = '';
+                                
+                                // Remove a mensagem de "Seja o primeiro a comentar" se ela existir
+                                const emptyMsg = commentsList.querySelector('p.text-center');
+                                if (emptyMsg) emptyMsg.remove();
+
+                                mostrarToast(data.message, 'success');
+                            } 
+                            else 
+                                mostrarToast(data.message || 'Erro ao comentar', 'error');
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            mostrarToast('Erro de comunicação com o servidor.', 'error');
+                        })
+                        .finally(() => {
+                            // Restaura o botão
+                            submitBtn.disabled = false;
+                            submitBtn.innerText = originalBtnText;
+                        });
+                    });
+                }
             });
             
         </script>
@@ -269,7 +466,7 @@ if ($id_user) {
                 submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...';
 
                 try {
-                    const response = await fetch('dev/exec/ajax_upload_perfil.php', {
+                    const response = await fetch('<?= DEV_URL ?>exec/ajax_upload_perfil.php', {
                         method: 'POST',
                         body: formData
                     });
@@ -297,49 +494,5 @@ if ($id_user) {
             });
         </script>
         <?php endif; ?>
-        <script src="<?= DEV_URL ?>JS/toast.js"></script>
-        <script>
-            <?php
-            if (isset($_SESSION['msg']) && is_array($_SESSION['msg'])) {
-                $texto = addslashes($_SESSION['msg']['texto']);
-                $tipo = $_SESSION['msg']['tipo'];
-                
-                echo "mostrarToast('{$texto}', '{$tipo}');";
-
-                unset($_SESSION['msg']);
-            }
-            ?>
-        </script>
-        <script>
-            // SISTEMA DE CARREGAMENTO DE JOGOS (Game Loader)
-            
-            function carregarScriptDoJogo() {
-                // 1. Pega o parâmetro da URL (ex: ?jogo=pong)
-                const params = new URLSearchParams(window.location.search);
-                const nomeJogo = params.get('jogo'); // se vier "pong", carrega "pong.js"
-
-                if (!nomeJogo) return; // Se não tiver jogo, não faz nada
-
-                // 2. Cria a tag script dinamicamente
-                const script = document.createElement('script');
-                script.src = `./${nomeJogo}.js`; // Assume que o arquivo chama pong.js
-                
-                script.onload = function() {
-                    console.log(`Jogo ${nomeJogo} carregado com sucesso.`);
-                    // O arquivo JS do jogo deve chamar automaticamente sua função de início
-                    // ou podemos padronizar uma função aqui, ex: window.Game.init();
-                };
-
-                script.onerror = function() {
-                    document.getElementById('game-root').innerHTML = 
-                        "<p style='color:red; text-align:center'>Erro ao carregar o jogo: " + nomeJogo + "</p>";
-                };
-
-                document.body.appendChild(script);
-            }
-
-            // Inicia o processo
-            window.onload = carregarScriptDoJogo;
-        </script>
     </body>
 </html>

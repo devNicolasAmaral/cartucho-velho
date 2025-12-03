@@ -1,8 +1,8 @@
 /* Janela Principal */
-.window-wrapper {
+.window-game {
     background-color: #c0c0c0;
-    max-width: 46vw;
-    box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+    width: 100%; /* Ocupa a largura da coluna */
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5); /* Sombra dura retro */
     border-top: 2px solid #dfdfdf;
     border-left: 2px solid #dfdfdf;
     border-right: 2px solid #000000;
@@ -10,6 +10,21 @@
     padding: 2px;
     display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.window-wrapper {
+    background-color: #c0c0c0;
+    width: 100%; /* Ocupa a largura da coluna */
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5); /* Sombra dura retro */
+    border-top: 2px solid #dfdfdf;
+    border-left: 2px solid #dfdfdf;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
 
 .title-bar {
@@ -22,6 +37,7 @@
     font-weight: bold;
     font-size: 14px;
     margin-bottom: 2px;
+    font-family: 'Pixelify Sans', sans-serif;
 }
 
 .title-bar-controls button {
@@ -41,10 +57,12 @@
 #game-root {
     position: relative;
     background-color: black;
-    width: 650px;
-    height: 480px;
+    width: 100%;
+    max-width: 650px; /* Limita largura máxima */
+    aspect-ratio: 4/3; /* Mantém proporção TV antiga */
+    margin: 0 auto;
     border: 2px inset #808080; /* Borda CRT */
-    overflow: hidden; /* Garante que nada saia da tela */
+    overflow: hidden;
 }
 
 /* Canvas Genérico */
@@ -62,16 +80,112 @@ button {
     padding: 5px 10px;
     margin: 5px;
     cursor: pointer;
-    font-family: 'MS Sans Serif', sans-serif;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
 }
 button:active, button.selecionado {
     border: 2px inset white;
     background-color: #dfdfdf;
 }
 
-/* --- Classes Utilitárias para os Jogos --- */
+/* --- SEÇÃO DE DESCRIÇÃO E CURIOSIDADES --- */
+.retro-text-panel {
+    background-color: #ffffff;
+    border: 2px inset #808080;
+    padding: 15px;
+    font-family: 'Courier New', Courier, monospace; /* Fonte tipo máquina de escrever/bloco de notas */
+    font-size: 14px;
+    color: #000;
+    height: 100%;
+    overflow-y: auto;
+    max-height: 300px;
+}
 
-/* Menus sobrepostos (Start, Game Over) */
+.retro-section-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #000080;
+    text-transform: uppercase;
+}
+
+/* --- SEÇÃO DE COMENTÁRIOS --- */
+.comments-container {
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 2px inset #808080;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-box {
+    background-color: #f0f0f0;
+    border: 1px solid #808080;
+    padding: 8px;
+    margin-bottom: 10px;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    display: flex;
+    gap: 10px;
+}
+
+.comment-avatar img {
+    border: 2px solid #000;
+    width: 40px;
+    height: 40px;
+}
+
+.comment-content {
+    width: 100%;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    border-bottom: 1px dotted #808080;
+    margin-bottom: 4px;
+    color: #000080;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Formulário de Comentário */
+.comment-form textarea {
+    width: 100%;
+    background-color: #fff;
+    border: 2px inset #808080;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    padding: 5px;
+    resize: vertical;
+    outline: none;
+}
+
+.comment-form textarea:focus {
+    background-color: #ffffe0; /* Amarelo clarinho de post-it */
+}
+
+/* Scrollbar personalizada Webkit */
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background: #c0c0c0;
+}
+::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border: 2px outset #fff;
+}
+::-webkit-scrollbar-corner {
+    background: #c0c0c0;
+}
+
+/* --- Classes Utilitárias para os Jogos --- */
 .game-overlay {
     position: absolute;
     top: 0; left: 0;
@@ -93,7 +207,6 @@ button:active, button.selecionado {
     font-family: "Courier New", monospace;
 }
 
-/* Placar Genérico (pode ser usado por qualquer jogo) */
 .score-board {
     position: absolute;
     top: 10px;
@@ -110,11 +223,10 @@ button:active, button.selecionado {
     text-shadow: 0 0 5px #00ff00;
     margin: 0 50px;
 }
-
 .hidden { display: none !important; }
 
 /* Responsividade */
 @media only screen and (max-width: 700px) {
-    #game-root { width: 100vw; height: 70vh; border: none; }
-    .window-wrapper { max-width: 100vw; border: none; }
+    #game-root { width: 100%; height: auto; aspect-ratio: 4/3; border: none; }
+    .window-wrapper { width: 100%; border: none; }
 }

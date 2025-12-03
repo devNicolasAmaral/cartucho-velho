@@ -10,7 +10,7 @@
             <h1 class="game-title">PONG.EXE</h1>
             <button id="btn1Jog">1 Jogador</button>
             <button id="btn2Jog">2 Jogadores</button>
-            <div style="margin-top:20px; font-size:12px;">Controles: Setas / W-S</div>
+            <div style="margin-top:20px; font-size:12px;">Player 1: W (para cima) e S (para baixo)<br>Player 2: 🠕 (para cima) e 🠗 (para baixo)</div>
         </div>
 
         <div id="telaFim" class="game-overlay hidden">

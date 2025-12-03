@@ -1,22 +1,7 @@
-/* Reseta e Estilo Global - Fundo Teal do Win98 */
-body {
-    background-color: #008080;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, sans-serif;
-    overflow: hidden;
-}
-
 /* Janela Principal */
 .window-wrapper {
     background-color: #c0c0c0;
-    width: auto;
-    max-width: 95vw;
+    max-width: 46vw;
     box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
     border-top: 2px solid #dfdfdf;
     border-left: 2px solid #dfdfdf;

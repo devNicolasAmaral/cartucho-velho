@@ -3,7 +3,7 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include "./dev/exec/config.php";
+include "../dev/exec/config.php";
 include DEV_PATH . "exec/conexao_banco.php";
 
 $id_user = $_SESSION['ID_Usuario'] ?? null;
@@ -17,15 +17,14 @@ if ($id_user) {
     $resultUser = $stmtUser->get_result();
     $user = $resultUser->fetch_assoc();
 }
-
-$jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORDER BY Nome");
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cartucho Velho</title>
+        <title>Tela do Jogo</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,15 +34,20 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/index.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/modal-retro.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/toast-retro.css">
+        <link rel="stylesheet" type="text/css" href="./game.css">
     </head>
     <body class="d-flex flex-column min-vh-100">
         <audio autoplay loop id="som" class="d-none">
-            <source src="./dev/MUSIC/bg-music.flac" type="audio/mpeg">
+            <source src="../dev/MUSIC/bg-music.flac" type="audio/mpeg">
         </audio>
         <div class="content flex-grow-1">
-            <div class="container-fluid p-2">
+            <div class="container-fluid p-2" style="margin-bottom: 50px;">
                 <div class="d-flex justify-content-between align-items-center text-center" style="background: linear-gradient(90deg, #350BAB 0%, #5792E5 100%);">
-                    <div class="m-2 d-flex justify-content-start text-secondary"><a href="index.php"><img src="dev/IMG/Site/Logo/logoTexto.png" style="max-width: 180px;" alt="Logo Cartucho Velho"></a></div>
+                    <div class="m-2 d-flex justify-content-start text-secondary">
+                        <a href="<?= BASE_URL ?>index.php">
+                            <img src="<?= DEV_URL ?>IMG/Site/Logo/logoTexto.png" style="max-width: 180px;" alt="Logo Cartucho Velho">
+                        </a>
+                    </div>
                     
                     <div class="m-2">
                         <?php if ($id_user && $user) : // --- DROPDOWN DO USUÁRIO LOGADO --- ?>
@@ -78,30 +82,23 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
                     </div>
                 </div>
             </div>
-
-            <div class="container mt-3 p-4">
-                <div class="text-center mb-3">
-                    <h4 class="text-white title-games">Todos os Jogos</h4>
-                </div>
-
-                <div class="row justify-content-center mb-4">
-                    <div class="col-12 col-md-6">
-                        <div class="input-group mb-3">
-                            <input type="text" id="busca_jogo" class="form-control search-bar-retro" placeholder="Digite para pesquisar seu jogo..." aria-describedby="basic-addon1">
-                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+            <div style="background-image: url(<?= DEV_URL ?>IMG/Site/Monitor.png); background-repeat: no-repeat; background-position: center;  background-size: 59%; padding-top: auto; padding-bottom: 50px; z-index: 2; position: relative;">
+                <div class="d-flex justify-content-center align-itens-center">
+                    <div class="window-wrapper">
+                        <div class="title-bar">
+                            <div class="title-bar-text" id="windowTitle">Carregando...</div>
+                            <div class="title-bar-controls">
+                                <button aria-label="Minimize"></button>
+                                <button aria-label="Maximize"></button>
+                                <button aria-label="Close"></button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="content">
-                        <div id="search-results-container" class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
-                            <?php while ($j = $jogos->fetch_assoc()): ?>
-                                <div class="col d-flex justify-content-center">
-                                    <a href="./jogos/jogo.php?jogo=<?= $j['Nome'] ?>" title="<?= $j['Nome'] ?>">
-                                        <div class="cartucho" style="background-image: url(<?= htmlspecialchars($j['Caminho']) ?>);"></div>
-                                    </a>
+
+                        <div class="window-body">
+                            <div id="game-root">
+                                <div style="text-align:center; padding: 20px;">
                                 </div>
-                            <?php endwhile; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -312,6 +309,37 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho FROM JOGOS ORD
                 unset($_SESSION['msg']);
             }
             ?>
+        </script>
+        <script>
+            // SISTEMA DE CARREGAMENTO DE JOGOS (Game Loader)
+            
+            function carregarScriptDoJogo() {
+                // 1. Pega o parâmetro da URL (ex: ?jogo=pong)
+                const params = new URLSearchParams(window.location.search);
+                const nomeJogo = params.get('jogo'); // se vier "pong", carrega "pong.js"
+
+                if (!nomeJogo) return; // Se não tiver jogo, não faz nada
+
+                // 2. Cria a tag script dinamicamente
+                const script = document.createElement('script');
+                script.src = `./${nomeJogo}.js`; // Assume que o arquivo chama pong.js
+                
+                script.onload = function() {
+                    console.log(`Jogo ${nomeJogo} carregado com sucesso.`);
+                    // O arquivo JS do jogo deve chamar automaticamente sua função de início
+                    // ou podemos padronizar uma função aqui, ex: window.Game.init();
+                };
+
+                script.onerror = function() {
+                    document.getElementById('game-root').innerHTML = 
+                        "<p style='color:red; text-align:center'>Erro ao carregar o jogo: " + nomeJogo + "</p>";
+                };
+
+                document.body.appendChild(script);
+            }
+
+            // Inicia o processo
+            window.onload = carregarScriptDoJogo;
         </script>
     </body>
 </html>

@@ -23,6 +23,10 @@
     border-radius: 0;
 }
 
+.toast-retro .toast-header i {
+    font-size: 14px;
+}
+
 /* Corpo do toast */
 .toast-retro .toast-body {
     color: #000000;

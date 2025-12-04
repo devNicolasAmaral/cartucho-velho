@@ -48,14 +48,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['arquivo'])){
         $stmt->execute();
 
         $_SESSION['Foto_Perfil'] = $caminhoDestino;
+        $_SESSION['msg'] = ['texto' => 'Foto Alterada Com Sucesso!', 'tipo' => 'success'];
 
         echo json_encode(['success' => true, 'message' => 'Imagem atualizada!', 'newPath' => BASE_URL . $caminhoDestino]);
         exit();
     }
     else{
+        $_SESSION['msg'] = ['texto' => 'Falha ao mover o arquivo para o destino.', 'tipo' => 'danger'];
         echo json_encode(['success' => false, 'message' => 'Falha ao mover o arquivo para o destino.']);
         exit();
     }
 }
+$_SESSION['msg'] = ['texto' => 'Requisição inválida.', 'tipo' => 'danger'];
 echo json_encode(['success' => false, 'message' => 'Requisição inválida.']);
 ?>

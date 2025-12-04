@@ -7,7 +7,7 @@ $response = ['success' => false, 'message' => '', 'html' => '', 'redirect' => fa
 
 // 1. Verifica Login
 if (!isset($_SESSION['ID_Usuario'])) {
-    $_SESSION['msg'] = ['texto' => 'Faça login para comentar!', 'tipo' => 'error'];
+    $_SESSION['msg'] = ['texto' => 'Faça login para comentar!', 'tipo' => 'info'];
     $response['message'] = 'Usuário não logado.';
     $response['redirect'] = true; // Avisa o JS para redirecionar
     echo json_encode($response);

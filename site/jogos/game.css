@@ -45,6 +45,22 @@
     background-color: #c0c0c0;
     border: 1px outset white;
     margin: 0; padding: 0;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    line-height: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-bar-controls button:not(:last-child) i {
+    margin-top: -2px;
+}
+
+.title-bar-controls button:last-child {
+    line-height: 16px;
+    position: relative;
+    top: 1px;
 }
 
 .window-body {

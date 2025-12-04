@@ -140,9 +140,9 @@ if ($id_jogo_atual) {
                             <div class="title-bar">
                                 <div class="title-bar-text" id="windowTitle"><?= htmlspecialchars($gameData['Nome']) ?>.exe</div>
                                 <div class="title-bar-controls">
-                                    <button aria-label="Minimize"></button>
-                                    <button aria-label="Maximize"></button>
-                                    <button aria-label="Close" onclick="window.location.href='index.php'"></button>
+                                    <button aria-label="Contrast" id="btn-contrast-game" onclick="toggleContrast()"><i class="bi bi-highlights"></i></button>
+                                    <button aria-label="Sound" id="btn-sound-game" onclick="toggleSound()"><i class="bi bi-volume-mute-fill"></i></button>
+                                    <button aria-label="Close" onclick="document.getElementById('som').pause(); window.location.href='index.php'">X</button>
                                 </div>
                             </div>
                             <div class="window-body">
@@ -281,10 +281,11 @@ if ($id_jogo_atual) {
             // --- NOVA LÓGICA PARA TOGGLE DE CONTRASTE E SOM ---
             document.addEventListener('DOMContentLoaded', function() {
                 let isContrastOn = false;
-                let isSoundOn = true; 
+                let isSoundOn = false; 
                 let searchResults = [];
                 const contrastBtn = document.getElementById('toggle-contrast-btn');
                 const soundBtn = document.getElementById('toggle-sound-btn');
+                if (!contrastBtn || !soundBtn) return;
                 const btnSom = document.getElementById('som');
                 btnSom.volume = 0.2;
 
@@ -302,41 +303,52 @@ if ($id_jogo_atual) {
                 }
 
                 // Função para Contraste
-                contrastBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    isContrastOn = !isContrastOn; 
-                    
+                window.toggleContrast = function() {
+                    isContrastOn = !isContrastOn;
                     if (isContrastOn) {
                         document.body.classList.add('high-contrast');
-                        this.innerHTML = '<i class="bi bi-highlights me-2"></i>Desativar Contraste';
-                        this.innerHTML = '<i class="bi bi-highlights me-2"></i>Desativar Contraste';
+                        contrastBtn.innerHTML = '<i class="bi bi-highlights me-2"></i>Desativar Contraste';
                         mostrarToast('Modo Contraste Ativado', 'success');
-                    } 
-                    else {
+                    } else {
                         document.body.classList.remove('high-contrast');
-                        this.innerHTML = '<i class="bi bi-highlights me-2"></i>Ativar Contraste';
+                        contrastBtn.innerHTML = '<i class="bi bi-highlights me-2"></i>Ativar Contraste';
                         mostrarToast('Modo Contraste Desativado', 'success');
                     }
+                };
+
+                contrastBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleContrast();
                 });
 
                 // Função para Som
-                soundBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    isSoundOn = !isSoundOn; 
-
+                window.toggleSound = function() {
+                    isSoundOn = !isSoundOn;
+                    const btnSoundGame = document.getElementById('btn-sound-game');
                     if (isSoundOn) {
-                        console.log("Som ATIVADO");
                         btnSom.play();
-                        this.innerHTML = '<i class="bi bi-volume-mute-fill me-2"></i>Desativar Som';
+                        soundBtn.innerHTML = '<i class="bi bi-volume-mute-fill me-2"></i>Desativar Som';
+                        if (btnSoundGame) btnSoundGame.innerHTML = '<i class="bi bi-volume-mute-fill"></i>';
                         mostrarToast('Musica Ativada', 'success');
-                    } 
-                    else {
-                        console.log("Som DESATIVADO");
+                    } else {
                         btnSom.pause();
                         btnSom.currentTime = 0;
-                        this.innerHTML = '<i class="bi bi-volume-up-fill me-2"></i>Ativar Som';
+                        soundBtn.innerHTML = '<i class="bi bi-volume-up-fill me-2"></i>Ativar Som';
+                        if (btnSoundGame) btnSoundGame.innerHTML = '<i class="bi bi-volume-up-fill"></i>';
                         mostrarToast('Musica Desativada', 'success');
                     }
+                };
+
+                // Inicializa o estado do som como ligado após autoplay
+                if (promise !== undefined) {
+                    promise.then(_ => {
+                        isSoundOn = true;
+                    });
+                }
+
+                soundBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleSound();
                 });
 
                 <?php
@@ -474,8 +486,7 @@ if ($id_jogo_atual) {
 
                     if (result.success) {
                         uploadStatusMessage.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
-                        if (formData.get('tipo') === 'foto')
-                            document.querySelector('.dropdown-toggle img').src = result.newPath;
+                        document.querySelector('.dropdown-toggle img').src = result.newPath + '?t=' + new Date().getTime();
                         
                         setTimeout(() => uploadModal.hide(), 1500);
                         mostrarToast('Foto Alterada Com Sucesso!', 'success');

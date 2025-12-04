@@ -98,7 +98,9 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho, Script FROM J
                             <?php while ($j = $jogos->fetch_assoc()): ?>
                                 <div class="col d-flex justify-content-center">
                                     <a href="./jogo.php?jogo=<?= $j['Script'] ?>" title="<?= $j['Nome'] ?>">
-                                        <div class="cartucho" style="background-image: url(<?= htmlspecialchars($j['Caminho']) ?>);"></div>
+                                        <div class="cartucho" style="background-image: url(<?= htmlspecialchars($j['Caminho']) ?>);">
+                                            <div class="cartucho-overlay">JOGAR</div>
+                                        </div>
                                     </a>
                                 </div>
                             <?php endwhile; ?>
@@ -228,7 +230,9 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho, Script FROM J
                         col.className = 'col d-flex justify-content-center';
                         col.innerHTML = `
                             <a href="jogo.php?id=${item.ID_Jogo}" title="${item.Nome}">
-                                <div class="cartucho" style="background-image: url('${item.Caminho}');"></div>
+                                <div class="cartucho" style="background-image: url('${item.Caminho}');">
+                                    <div class="cartucho-overlay">JOGAR</div>
+                                </div>
                             </a>
                         `;
                         searchResultsContainer.appendChild(col);
@@ -284,11 +288,12 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho, Script FROM J
 
                     if (result.success) {
                         uploadStatusMessage.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
-                        if (formData.get('tipo') === 'foto')
-                            document.querySelector('.dropdown-toggle img').src = result.newPath;
-                        
-                        setTimeout(() => uploadModal.hide(), 1500);
-                        mostrarToast('Foto Alterada Com Sucesso!', 'success');
+                        setTimeout(() => {
+                            uploadModal.hide();
+                            setTimeout(() => {
+                                location.reload();
+                            }, 300);
+                        }, 1500);
                     } 
                     else
                         uploadStatusMessage.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;

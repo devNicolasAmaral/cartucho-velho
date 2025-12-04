@@ -32,7 +32,7 @@ Siga os passos abaixo para rodar o projeto localmente:
 Certifique-se de ter um ambiente de servidor local instalado
 
 ### 2. Clonar o Repositório
-git clone [https://github.com/SEU_USUARIO/cartucho-velho.git](https://github.com/devNicolasAmaral/cartucho-velho.git)
+git clone [https://github.com/devNicolasAmaral/cartucho-velho.git](https://github.com/devNicolasAmaral/cartucho-velho.git)
 Mova a pasta do projeto para dentro do diretório do seu servidor.
 
 ### 3. Configurar o Banco de Dados

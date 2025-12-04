@@ -29,27 +29,27 @@ O sistema oferece uma coleção de jogos clássicos recriados em JavaScript puro
 Siga os passos abaixo para rodar o projeto localmente:
 
 ### 1. Pré-requisitos
-Certifique-se de ter um ambiente de servidor local instalado
+* Certifique-se de ter um ambiente de servidor local instalado
 
 ### 2. Clonar o Repositório
-git clone [https://github.com/devNicolasAmaral/cartucho-velho.git](https://github.com/devNicolasAmaral/cartucho-velho.git)
-Mova a pasta do projeto para dentro do diretório do seu servidor.
+* git clone [https://github.com/devNicolasAmaral/cartucho-velho.git](https://github.com/devNicolasAmaral/cartucho-velho.git)
+* Mova a pasta do projeto para dentro do diretório do seu servidor.
 
 ### 3. Configurar o Banco de Dados
-Abra o phpMyAdmin.
-Crie um novo banco de dados chamado db_cartucho_velho (ou o nome que estiver no seu config.php).
-Importe o arquivo cv.sql (que deve estar na pasta /0-setup deste repositório).
+* Abra o phpMyAdmin.
+* Crie um novo banco de dados chamado db_cartucho_velho (ou o nome que estiver no seu config.php).
+* Importe o arquivo cv.sql (que deve estar na pasta /0-setup deste repositório).
 
 ### 4. Configurar Conexão
-Verifique o arquivo dev/exec/conexao_banco.php e config.php e certifique-se de que as credenciais batem com as do seu servidor local.
+* Verifique o arquivo dev/exec/conexao_banco.php e config.php e certifique-se de que as credenciais batem com as do seu servidor local.
 
 ### 5. Executar
-Acesse no seu navegador: http://localhost/cartucho-velho/index.php
+* Acesse no seu navegador: http://localhost/cartucho-velho/index.php
 
 🧪 Funcionalidades de Destaque
-Sistema de Login/Cadastro: Autenticação segura com PHP Sessions.
-Comentários Assíncronos: Postagem de mensagens nos jogos sem recarregar a página (Fetch API).
-Design Responsivo: Layout adaptável mantendo a estética retrô.
-Upload de Perfil: Gerenciamento de avatares de usuário.
+* Sistema de Login/Cadastro: Autenticação segura com PHP Sessions.
+* Comentários Assíncronos: Postagem de mensagens nos jogos sem recarregar a página (Fetch API).
+* Design Responsivo: Layout adaptável mantendo a estética retrô.
+* Upload de Perfil: Gerenciamento de avatares de usuário.
 
-Desenvolvido por Matheus Lopes, Nicolas Amaral, Raisa Silva - 2025.
+**Desenvolvido por Matheus Lopes, Nicolas Amaral, Raisa Silva - 2025.**

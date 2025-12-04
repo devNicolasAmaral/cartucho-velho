@@ -139,60 +139,64 @@ body {
     border-bottom: 1px solid #ffffff; /* Borda clara embaixo */
 }
 
-/* Estilo para a barra de pesquisa retrô */
+/* --- AUSTE DA BARRA DE PESQUISA (WIN98 STYLE) --- */
+
+/* Remove arredondamentos do Bootstrap no grupo */
+.input-group * {
+    border-radius: 0 !important;
+}
+
+/* O Campo de Digitação (Visual "Afundado") */
 .search-bar-retro {
     background-color: #ffffff;
-    border: 2px solid;
-    border-right-width: 0;
-    /* Efeito 3D de borda para dentro (inset) */
-    border-top-color: #404040;
-    border-left-color: #404040;
-    border-right-color: #ffffff00;
-    border-bottom-color: #ffffff;
-    border-radius: 0;
-    box-shadow: none; /* Remove qualquer sombra do bootstrap */
+    color: #000;
     font-family: 'VT323', monospace !important;
-    font-size: 24px;
-    color: #000000;
-    padding: 8px 10px;
-    width: 100%; /* Para ocupar o espaço da coluna do bootstrap */
+    font-size: 22px;
+    
+    /* Borda 3D "Inset" (Afundada) */
+    border: 2px inset #ffffff !important; 
+    
+    /* Remove sombras e bordas azuis do Bootstrap ao clicar */
+    box-shadow: none !important;
+    outline: none !important;
+    height: 40px; /* Altura fixa para alinhar com o botão */
 }
 
-/* Remove a borda azul padrão ao focar no campo */
 .search-bar-retro:focus {
-    outline: none;
-    box-shadow: none;
-
-    border-top-color: #404040;
-    border-left-color: #404040;
-    border-right-color: #ffffff00;
-    border-bottom-color: #ffffff;
-}
-
-
-.input-group-text {
     background-color: #ffffff;
-    border: 2px solid;
-    border-left-width: 0;
-
-    border-top-color: #404040;
-    border-left-color: #404040;
-    border-right-color: #ffffff00;
-    border-bottom-color: #ffffff;
-    border-radius: 0;
-
-    box-shadow: none; /* Remove qualquer sombra do bootstrap */
-    font-family: 'VT323', monospace !important;
-    font-size: 16px;
-    color: #000000;
-    padding: 8px 10px;
+    box-shadow: none !important;
+    border: 2px inset #ffffff !important;
 }
 
-/* Estiliza o texto do placeholder */
 .search-bar-retro::placeholder {
     color: #808080;
-    opacity: 1;
-    font-family: 'VT323', monospace !important;
+    font-family: 'VT323', monospace;
+}
+
+/* O Botão de Lupa (Visual de Botão "Saltado") */
+.input-group-text {
+    background-color: #c0c0c0; /* Cinza do sistema */
+    color: #000;
+    
+    /* Borda 3D "Outset" (Saltada) */
+    border: 2px outset #ffffff !important;
+    
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+}
+
+/* Efeito ao passar o mouse no botão */
+.input-group-text:hover {
+    background-color: #dcdcdc;
+}
+
+/* Efeito ao clicar no botão (Afunda) */
+.input-group-text:active {
+    border: 2px inset #ffffff !important;
+    transform: translate(1px, 1px); /* Move levemente para dar sensação de clique */
 }
 
 /* Estilos para o Modo de Alto Contraste */

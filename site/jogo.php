@@ -168,7 +168,7 @@ if ($id_jogo_atual) {
                                 <div class="retro-text-panel">
                                     <h4 class="retro-section-title">> Descrição do Jogo:</h4>
                                     <p>
-                                        <?= nl2br(htmlspecialchars($gameData['Descricao'] ?? 'Sem descrição disponível.')) ?>
+                                        <?= nl2br(htmlspecialchars($gameData['Descrição'] ?? 'Sem descrição disponível.')) ?>
                                     </p>
                                     <hr style="border-top: 2px dashed #808080;">
                                     <h4 class="retro-section-title">> Curiosidades & Dicas:</h4>

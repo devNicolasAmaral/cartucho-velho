@@ -35,6 +35,7 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho, Script FROM J
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/index.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/modal-retro.css">
         <link rel="stylesheet" href="<?php echo DEV_URL ?>CSS/toast-retro.css">
+        <link rel="stylesheet" type="text/css" href="./jogos/game.css">
     </head>
     <body class="d-flex flex-column min-vh-100">
         <audio autoplay loop id="som" class="d-none">
@@ -79,22 +80,29 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho, Script FROM J
                 </div>
             </div>
 
-            <div class="container mt-3 p-4">
+            <div class="container mt-2 p-4">
                 <div class="text-center mb-3">
-                    <h4 class="text-white title-games">Todos os Jogos</h4>
+                    <h4 class="text-white title-games" style="text-shadow: 4px 4px #000;">GALERIA DE JOGOS</h4>
                 </div>
-
-                <div class="row justify-content-center mb-4">
-                    <div class="col-12 col-md-6">
-                        <div class="input-group mb-3">
-                            <input type="text" id="busca_jogo" class="form-control search-bar-retro" placeholder="Digite para pesquisar seu jogo..." aria-describedby="basic-addon1">
-                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+                <div class="row justify-content-center mb-3">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="window-wrapper">
+                            <div class="title-bar">
+                                <div class="title-bar-text">LIBRARY_SEARCH.EXE</div>
+                            </div>
+                            <div class="window-body">
+                                <p style="margin-bottom: 5px; font-size: 14px; font-family: 'Pixelify Sans', sans-serif;">Localizar Cartucho:</p>
+                                <div class="input-group">
+                                    <input type="text" id="busca_jogo" class="form-control search-bar-retro" placeholder="Digite o nome do jogo..." aria-describedby="basic-addon1" autofocus>
+                                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="mb-3">
                     <div class="content">
-                        <div id="search-results-container" class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+                        <div id="search-results-container" class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 justify-content-center">
                             <?php while ($j = $jogos->fetch_assoc()): ?>
                                 <div class="col d-flex justify-content-center">
                                     <a href="./jogo.php?jogo=<?= $j['Script'] ?>" title="<?= $j['Nome'] ?>">
@@ -221,7 +229,24 @@ $jogos = $conn->query("SELECT ID_Jogo, Nome, Descrição, Caminho, Script FROM J
                     searchResultsContainer.innerHTML = '';
 
                     if (!Array.isArray(results) || results.length === 0) {
-                        searchResultsContainer.innerHTML = '<p class="text-center text-white">Nenhum jogo encontrado com esse nome.</p>';
+                        searchResultsContainer.innerHTML = `
+                            <div class="col-12 d-flex justify-content-center">
+                                <div class="window-wrapper" style="max-width: 400px; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                                    <div class="title-bar" style="background: linear-gradient(90deg, #800000, #ff0000);">
+                                        <div class="title-bar-text">ERROR_404.EXE</div>
+                                        <div class="title-bar-controls">
+                                            <button aria-label="Close">X</button>
+                                        </div>
+                                    </div>
+                                    <div class="window-body text-center p-4">
+                                        <i class="bi bi-exclamation-triangle-fill" style="font-size: 32px; color: #808080;"></i>
+                                        <p style="font-family: 'VT323'; font-size: 22px; margin-top: 10px; margin-bottom: 0;">
+                                            Nenhum cartucho encontrado com esse nome.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
                         return;
                     }
 
